@@ -24,8 +24,10 @@ using namespace base;
 
 void printLicense();
 string color(string text, int colorCode);
-string green(string text);
 string red(string text);
+string green(string text);
+string yellow(string text);
+string blue(string text);
 int die(string errorText);
 
 int main(int argc, char* argv[]) {
@@ -33,7 +35,7 @@ int main(int argc, char* argv[]) {
 	string fileIdentifier;
 	Controller* c = new Controller(&errorText);
 
-	cout << "nddl-generator-cli v1.0.0" << endl << endl;
+	cout << yellow("nddl-generator-cli v1.0.0") << endl;
 
 	printLicense();
 
@@ -47,7 +49,7 @@ int main(int argc, char* argv[]) {
 		cin >> fileIdentifier;
 	}
 
-	cout << "Processing \"" << fileIdentifier << "\"..." << endl;
+	cout << "Processing \"" << yellow(fileIdentifier) << "\"..." << endl;
 
 	cout << "Checking file...\t\t";
 
@@ -76,7 +78,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	cout << green("[OK]") << endl;
-	cout << "NDDL file successfully generated. Saved as \"" << c->getOutputFileName() << "\"." << endl;
+	cout << "NDDL file successfully generated. Saved as \"" << yellow(c->getOutputFileName()) << "\"." << endl;
 
 	delete c;
 	return EXIT_SUCCESS;
@@ -84,19 +86,20 @@ int main(int argc, char* argv[]) {
 
 void printLicense()
 {
-	cout << " * Copyright 2015 Christian Dreher (christian.dreher@student.kit.edu)" << endl;
-	cout << " *" << endl;
-	cout << " * Licensed under the Apache License, Version 2.0 (the \"License\");" << endl;
-	cout << " * you may not use this file except in compliance with the License." << endl;
-	cout << " * You may obtain a copy of the License at" << endl;
-	cout << " *" << endl;
-	cout << " * \thttp://www.apache.org/licenses/LICENSE-2.0" << endl;
-	cout << " *" << endl;
-	cout << " * Unless required by applicable law or agreed to in writing, software" << endl;
-	cout << " * distributed under the License is distributed on an \"AS IS\" BASIS," << endl;
-	cout << " * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." << endl;
-	cout << " * See the License for the specific language governing permissions and" << endl;
-	cout << " * limitations under the License." << endl << endl;
+	cout << endl;
+	cout << blue(" * Copyright 2015 Christian Dreher (christian.dreher@student.kit.edu)") << endl;
+	cout << blue(" *") << endl;
+	cout << blue(" * Licensed under the Apache License, Version 2.0 (the \"License\");") << endl;
+	cout << blue(" * you may not use this file except in compliance with the License.") << endl;
+	cout << blue(" * You may obtain a copy of the License at") << endl;
+	cout << blue(" *") << endl;
+	cout << blue(" * \thttp://www.apache.org/licenses/LICENSE-2.0") << endl;
+	cout << blue(" *") << endl;
+	cout << blue(" * Unless required by applicable law or agreed to in writing, software") << endl;
+	cout << blue(" * distributed under the License is distributed on an \"AS IS\" BASIS,") << endl;
+	cout << blue(" * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.") << endl;
+	cout << blue(" * See the License for the specific language governing permissions and") << endl;
+	cout << blue(" * limitations under the License.") << endl << endl;
 }
 
 string color(string text, int colorCode)
@@ -104,14 +107,24 @@ string color(string text, int colorCode)
 	return "\033[1;3" + boost::lexical_cast<string>(colorCode) + "m" + text + "\033[0m";
 }
 
+string red(string text)
+{
+	return color(text, 1);
+}
+
 string green(string text)
 {
 	return color(text, 2);
 }
 
-string red(string text)
+string yellow(string text)
 {
-	return color(text, 1);
+	return color(text, 3);
+}
+
+string blue(string text)
+{
+	return color(text, 4);
 }
 
 int die(string errorText)
