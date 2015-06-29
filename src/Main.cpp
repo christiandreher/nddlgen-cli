@@ -22,19 +22,31 @@
 using namespace std;
 using namespace base;
 
+void printLicense();
 string color(string text, int colorCode);
 string green(string text);
 string red(string text);
 int die(string errorText);
 
-int main() {
+int main(int argc, char* argv[]) {
 	string errorText;
 	string fileIdentifier;
 	Controller* c = new Controller(&errorText);
 
-	cout << "This is nddl-generator-cli v1.0.0" << endl;
-	cout << "Enter file identifier: ";
-	cin >> fileIdentifier;
+	cout << "nddl-generator-cli v1.0.0" << endl << endl;
+
+	printLicense();
+
+	if (argc > 1)
+	{
+		fileIdentifier = string(argv[1]);
+	}
+	else
+	{
+		cout << "Enter file identifier: ";
+		cin >> fileIdentifier;
+	}
+
 	cout << "Processing \"" << fileIdentifier << "\"..." << endl;
 
 	cout << "Checking file...\t\t";
@@ -66,7 +78,25 @@ int main() {
 	cout << green("[OK]") << endl;
 	cout << "NDDL file successfully generated. Saved as \"" << c->getOutputFileName() << "\"." << endl;
 
+	delete c;
 	return EXIT_SUCCESS;
+}
+
+void printLicense()
+{
+	cout << " * Copyright 2015 Christian Dreher (christian.dreher@student.kit.edu)" << endl;
+	cout << " *" << endl;
+	cout << " * Licensed under the Apache License, Version 2.0 (the \"License\");" << endl;
+	cout << " * you may not use this file except in compliance with the License." << endl;
+	cout << " * You may obtain a copy of the License at" << endl;
+	cout << " *" << endl;
+	cout << " * \thttp://www.apache.org/licenses/LICENSE-2.0" << endl;
+	cout << " *" << endl;
+	cout << " * Unless required by applicable law or agreed to in writing, software" << endl;
+	cout << " * distributed under the License is distributed on an \"AS IS\" BASIS," << endl;
+	cout << " * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." << endl;
+	cout << " * See the License for the specific language governing permissions and" << endl;
+	cout << " * limitations under the License." << endl << endl;
 }
 
 string color(string text, int colorCode)
