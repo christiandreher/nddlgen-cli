@@ -6,15 +6,24 @@ This package is the CLI to use the nddl-generator-core library.
 
 ## Dependencies
 
-Compiling this project needs a linking against following libraries:
+### Compiler
+
+#### Include paths (-l)
+ * *path to sdformat-2.3*
+ * *path to nddl-generator-core/src*
+
+#### Include files (-include)
+ * *none*
+
+### Linker
+
+#### Libraries (-l)
  * nddl-generator-core
  * sdfformat (part of libsdfformat2-dev)
  * boost_filesystem (part of libboost-all-dev)
  * boost_system (part of libboost-all-dev)
 
-## Include Paths (-l)
-
-Following include paths need to be set for the compiler
+#### Include Paths (-L)
  * *path to nddl-generator-core .a file*
 
 ## License
