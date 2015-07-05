@@ -17,6 +17,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <boost/lexical_cast.hpp>
+
 #include "base/Controller.h"
 
 using namespace std;
@@ -53,7 +54,7 @@ int main(int argc, char* argv[]) {
 
 	cout << "Checking file...\t\t";
 
-	if(!c->setFileIdentifier(fileIdentifier) || !c->checkFile())
+	if (!c->setFileIdentifier(fileIdentifier) || !c->checkFile())
 	{
 		cout << red("[FAIL]") << endl;
 		return die(errorText);
@@ -62,7 +63,7 @@ int main(int argc, char* argv[]) {
 	cout << green("[OK]") << endl;
 	cout << "Parsing file...\t\t\t";
 
-	if(!c->parseFile())
+	if (!c->parseSdf())
 	{
 		cout << red("[FAIL]") << endl;
 		return die(errorText);
@@ -71,7 +72,7 @@ int main(int argc, char* argv[]) {
 	cout << green("[OK]") << endl;
 	cout << "Generating NDDL file...\t\t";
 
-	if(!c->generateNddl())
+	if (!c->generateNddl())
 	{
 		cout << red("[FAIL]") << endl;
 		return die(errorText);
