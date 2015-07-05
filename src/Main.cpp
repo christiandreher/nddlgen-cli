@@ -31,7 +31,8 @@ string yellow(string text);
 string blue(string text);
 int die(string errorText);
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
 	string errorText;
 	string fileIdentifier;
 	Controller* c = new Controller(&errorText);
