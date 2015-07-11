@@ -18,69 +18,66 @@
 #include <cstdlib>
 #include <boost/lexical_cast.hpp>
 
-#include "base/Controller.h"
-
-using namespace std;
-using namespace base;
+#include "nddlgen/Controller.h"
 
 void printLicense();
-string color(string text, int colorCode);
-string red(string text);
-string green(string text);
-string yellow(string text);
-string blue(string text);
-int die(string errorText);
+std::string color(std::string text, int colorCode);
+std::string red(std::string text);
+std::string green(std::string text);
+std::string yellow(std::string text);
+std::string blue(std::string text);
+int die(std::string errorText);
 
 int main(int argc, char* argv[])
 {
-	string errorText;
-	string fileIdentifier;
-	Controller* c = new Controller(&errorText);
+	std::string errorText;
+	std::string fileIdentifier;
+	nddlgen::Controller* c = new nddlgen::Controller(&errorText);
 
-	cout << yellow("nddl-generator-cli v1.0.0") << endl;
+	std::cout << yellow("nddl-generator-cli v1.0.0") << std::endl;
 
 	printLicense();
 
 	if (argc > 1)
 	{
-		fileIdentifier = string(argv[1]);
+		fileIdentifier = std::string(argv[1]);
 	}
 	else
 	{
-		cout << "Enter file identifier: ";
-		cin >> fileIdentifier;
+		std::cout << "Enter file identifier: ";
+		std::cin >> fileIdentifier;
 	}
 
-	cout << "Processing \"" << yellow(fileIdentifier) << "\"..." << endl;
+	std::cout << "Processing \"" << yellow(fileIdentifier) << "\"..." << std::endl;
 
-	cout << "Checking file...\t\t";
+	std::cout << "Checking file...\t\t";
 
 	if (!c->setFileIdentifier(fileIdentifier) || !c->checkFile())
 	{
-		cout << red("[FAIL]") << endl;
+		std::cout << red("[FAIL]") << std::endl;
 		return die(errorText);
 	}
 
-	cout << green("[OK]") << endl;
-	cout << "Parsing file...\t\t\t";
+	std::cout << green("[OK]") << std::endl;
+	std::cout << "Parsing file...\t\t\t";
 
 	if (!c->parseSdf())
 	{
-		cout << red("[FAIL]") << endl;
+		std::cout << red("[FAIL]") << std::endl;
 		return die(errorText);
 	}
 
-	cout << green("[OK]") << endl;
-	cout << "Generating NDDL file...\t\t";
+	std::cout << green("[OK]") << std::endl;
+	std::cout << "Generating NDDL file...\t\t";
 
 	if (!c->generateNddl())
 	{
-		cout << red("[FAIL]") << endl;
+		std::cout << red("[FAIL]") << std::endl;
 		return die(errorText);
 	}
 
-	cout << green("[OK]") << endl;
-	cout << "NDDL file successfully generated. Saved as \"" << yellow(c->getOutputFileName()) << "\"." << endl;
+	std::cout << green("[OK]") << std::endl;
+	std::cout << "NDDL file successfully generated. Saved as \"" << yellow(c->getOutputFileName()) << "\"." << std::endl;
 
 	delete c;
 	return EXIT_SUCCESS;
@@ -88,50 +85,50 @@ int main(int argc, char* argv[])
 
 void printLicense()
 {
-	cout << endl;
-	cout << blue(" * Copyright 2015 Christian Dreher (christian.dreher@student.kit.edu)") << endl;
-	cout << blue(" *") << endl;
-	cout << blue(" * Licensed under the Apache License, Version 2.0 (the \"License\");") << endl;
-	cout << blue(" * you may not use this file except in compliance with the License.") << endl;
-	cout << blue(" * You may obtain a copy of the License at") << endl;
-	cout << blue(" *") << endl;
-	cout << blue(" * \thttp://www.apache.org/licenses/LICENSE-2.0") << endl;
-	cout << blue(" *") << endl;
-	cout << blue(" * Unless required by applicable law or agreed to in writing, software") << endl;
-	cout << blue(" * distributed under the License is distributed on an \"AS IS\" BASIS,") << endl;
-	cout << blue(" * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.") << endl;
-	cout << blue(" * See the License for the specific language governing permissions and") << endl;
-	cout << blue(" * limitations under the License.") << endl << endl;
+	std::cout << std::endl;
+	std::cout << blue(" * Copyright 2015 Christian Dreher (christian.dreher@student.kit.edu)") << std::endl;
+	std::cout << blue(" *") << std::endl;
+	std::cout << blue(" * Licensed under the Apache License, Version 2.0 (the \"License\");") << std::endl;
+	std::cout << blue(" * you may not use this file except in compliance with the License.") << std::endl;
+	std::cout << blue(" * You may obtain a copy of the License at") << std::endl;
+	std::cout << blue(" *") << std::endl;
+	std::cout << blue(" * \thttp://www.apache.org/licenses/LICENSE-2.0") << std::endl;
+	std::cout << blue(" *") << std::endl;
+	std::cout << blue(" * Unless required by applicable law or agreed to in writing, software") << std::endl;
+	std::cout << blue(" * distributed under the License is distributed on an \"AS IS\" BASIS,") << std::endl;
+	std::cout << blue(" * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.") << std::endl;
+	std::cout << blue(" * See the License for the specific language governing permissions and") << std::endl;
+	std::cout << blue(" * limitations under the License.") << std::endl << std::endl;
 }
 
-string color(string text, int colorCode)
+std::string color(std::string text, int colorCode)
 {
-	return "\033[1;3" + boost::lexical_cast<string>(colorCode) + "m" + text + "\033[0m";
+	return "\033[1;3" + boost::lexical_cast<std::string>(colorCode) + "m" + text + "\033[0m";
 }
 
-string red(string text)
+std::string red(std::string text)
 {
 	return color(text, 1);
 }
 
-string green(string text)
+std::string green(std::string text)
 {
 	return color(text, 2);
 }
 
-string yellow(string text)
+std::string yellow(std::string text)
 {
 	return color(text, 3);
 }
 
-string blue(string text)
+std::string blue(std::string text)
 {
 	return color(text, 4);
 }
 
-int die(string errorText)
+int die(std::string errorText)
 {
-	cout << flush;
-	cerr << red("Error. " + errorText) << endl;
+	std::cout << std::flush;
+	std::cerr << red("Error. " + errorText) << std::endl;
 	return EXIT_FAILURE;
 }
