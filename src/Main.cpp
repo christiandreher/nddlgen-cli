@@ -48,9 +48,9 @@ int main(int argc, char* argv[])
 		std::cin >> fileIdentifier;
 	}
 
-	std::cout << "Processing \"" << yellow(fileIdentifier) << "\"..." << std::endl;
+	std::cout << "Processing file\t\t\t\t" << yellow(fileIdentifier) << std::endl;
 
-	std::cout << "Checking file...\t\t";
+	std::cout << "Checking file...\t\t\t";
 
 	if (!c->setFileIdentifier(fileIdentifier) || !c->checkFile())
 	{
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 	}
 
 	std::cout << green("[OK]") << std::endl;
-	std::cout << "Parsing file...\t\t\t";
+	std::cout << "Parsing SDF...\t\t\t\t";
 
 	if (!c->parseSdf())
 	{
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 	}
 
 	std::cout << green("[OK]") << std::endl;
-	std::cout << "Generating NDDL file...\t\t";
+	std::cout << "Generating NDDL files...\t\t";
 
 	if (!c->generateNddl())
 	{
@@ -76,8 +76,13 @@ int main(int argc, char* argv[])
 		return die(errorText);
 	}
 
-	std::cout << green("[OK]") << std::endl;
-	std::cout << "NDDL file successfully generated. Saved as \"" << yellow(c->getOutputFileName()) << "\"." << std::endl;
+	std::cout << green("[OK]") << std::endl << std::endl;
+
+	std::cout << green("NDDL files successfully generated.") << std::endl << std::endl;
+
+	std::cout << "Saving files in path \t\t\t" << yellow(c->getOutputFilesPath()) << std::endl;
+	std::cout << "Domain models saved as \t\t\t" << yellow(c->getModelsOutputFileName()) << std::endl;
+	std::cout << "Domain initial state saved as \t\t" << yellow(c->getInitialStateOutputFileName()) << std::endl;
 
 	delete c;
 	return EXIT_SUCCESS;
@@ -129,6 +134,6 @@ std::string blue(std::string text)
 int die(std::string errorText)
 {
 	std::cout << std::flush;
-	std::cerr << red("Error. " + errorText) << std::endl;
+	std::cerr << std::endl << red("Error. " + errorText) << std::endl;
 	return EXIT_FAILURE;
 }
