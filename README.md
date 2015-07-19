@@ -15,6 +15,9 @@ This package is the CLI to use the nddl-generator-core library.
 #### Include files (-include)
  * *none*
 
+#### Miscellaneous
+ * Other flags: *-c -fmessage-length=0 -std=c++0x*
+ 
 ### Linker
 
 #### Libraries (-l)
