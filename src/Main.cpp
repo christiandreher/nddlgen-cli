@@ -30,11 +30,12 @@ int die(std::string errorText);
 
 int main(int argc, char* argv[])
 {
+	std::string nddlGenCliVersion = "1.0.0";
 	std::string errorText;
 	std::string fileIdentifier;
 	nddlgen::Controller* c = new nddlgen::Controller(&errorText);
 
-	std::cout << yellow("nddl-generator-cli v1.0.0") << std::endl;
+	std::cout << yellow("nddl-generator-cli v" + nddlGenCliVersion + " using nddl-generator-core v" + nddlgen::Controller::NDDLGEN_VERSION) << std::endl;
 
 	printLicense();
 
