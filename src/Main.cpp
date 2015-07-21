@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 	std::cout << "Domain models saved as \t\t\t" << yellow(c->getModelsOutputFileName()) << std::endl;
 	std::cout << "Domain initial state saved as \t\t" << yellow(c->getInitialStateOutputFileName()) << std::endl;
 
-	delete c;
+	boost::checked_delete(c);
 	return EXIT_SUCCESS;
 }
 
