@@ -31,7 +31,7 @@ This package is the CLI to use the nddl-generator-core library.
 
 ## License
 
-Copyright 2015 Christian Dreher (christian.dreher@student.kit.edu)  
+Copyright 2015 Christian Dreher (dreher@charlydelta.org)  
   
 Licensed under the Apache License, Version 2.0 (the "License");  
 you may not use this file except in compliance with the License.  

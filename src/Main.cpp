@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Christian Dreher (christian.dreher@student.kit.edu)
+ * Copyright 2015 Christian Dreher (dreher@charlydelta.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,12 +30,12 @@ int die(std::string errorText);
 
 int main(int argc, char* argv[])
 {
-	std::string nddlGenCliVersion = "1.0.0";
-	std::string errorText;
+	std::string nddlGenCliVersion = "1.0.1";
 	std::string fileIdentifier;
-	nddlgen::Controller* c = new nddlgen::Controller(&errorText);
+	nddlgen::Controller* c = new nddlgen::Controller();
+	c->setAdapter("nddlgen-cli v" + nddlGenCliVersion);
 
-	std::cout << yellow("nddl-generator-cli v" + nddlGenCliVersion + " using nddl-generator-core v" + nddlgen::Controller::NDDLGEN_VERSION) << std::endl;
+	std::cout << yellow("nddlgen-cli v" + nddlGenCliVersion + " using nddlgen-core v" + nddlgen::utilities::Meta::NDDLGEN_VERSION) << std::endl;
 
 	printLicense();
 
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 	if (!c->setFileIdentifier(fileIdentifier) || !c->checkFile())
 	{
 		std::cout << red("[FAIL]") << std::endl;
-		return die(errorText);
+		return die(c->getErrorText());
 	}
 
 	std::cout << green("[OK]") << std::endl;
@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 	if (!c->parseSdf())
 	{
 		std::cout << red("[FAIL]") << std::endl;
-		return die(errorText);
+		return die(c->getErrorText());
 	}
 
 	std::cout << green("[OK]") << std::endl;
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
 	if (!c->generateNddl())
 	{
 		std::cout << red("[FAIL]") << std::endl;
-		return die(errorText);
+		return die(c->getErrorText());
 	}
 
 	std::cout << green("[OK]") << std::endl << std::endl;
@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
 void printLicense()
 {
 	std::cout << std::endl;
-	std::cout << blue(" * Copyright 2015 Christian Dreher (christian.dreher@student.kit.edu)") << std::endl;
+	std::cout << blue(" * Copyright 2015 Christian Dreher (dreher@charlydelta.org)") << std::endl;
 	std::cout << blue(" *") << std::endl;
 	std::cout << blue(" * Licensed under the Apache License, Version 2.0 (the \"License\");") << std::endl;
 	std::cout << blue(" * you may not use this file except in compliance with the License.") << std::endl;
