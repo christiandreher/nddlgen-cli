@@ -23,6 +23,7 @@ This package is the CLI to use the nddl-generator-core library.
 #### Libraries (-l)
  * nddl-generator-core
  * sdfformat (part of libsdfformat2-dev)
+ * boost_date_time (part of libboost-all-dev)
  * boost_filesystem (part of libboost-all-dev)
  * boost_system (part of libboost-all-dev)
 

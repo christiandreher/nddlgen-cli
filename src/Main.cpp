@@ -26,11 +26,10 @@ std::string red(std::string text);
 std::string green(std::string text);
 std::string yellow(std::string text);
 std::string blue(std::string text);
-int die(std::string errorText);
 
 int main(int argc, char* argv[])
 {
-	std::string nddlGenCliVersion = "1.0.1";
+	std::string nddlGenCliVersion = "1.0.2";
 	std::string fileIdentifier;
 	nddlgen::Controller* c = new nddlgen::Controller();
 	c->setAdapter("nddlgen-cli v" + nddlGenCliVersion);
@@ -49,44 +48,46 @@ int main(int argc, char* argv[])
 		std::cin >> fileIdentifier;
 	}
 
-	std::cout << "Processing file\t\t\t\t" << yellow(fileIdentifier) << std::endl;
-
-	std::cout << "Checking file...\t\t\t";
-
-	if (!c->setFileIdentifier(fileIdentifier) || !c->checkFile())
+	try
 	{
+		std::cout << "Processing file\t\t\t\t" << yellow(fileIdentifier) << std::endl;
+
+		std::cout << "Checking file...\t\t\t";
+		c->setFileIdentifier(fileIdentifier);
+		c->checkFile();
+		std::cout << green("[OK]") << std::endl;
+
+		std::cout << "Parsing SDF...\t\t\t\t";
+		c->parseSdf();
+		std::cout << green("[OK]") << std::endl;
+
+		std::cout << "Generating NDDL files...\t\t";
+		c->generateNddl();
+		std::cout << green("[OK]") << std::endl << std::endl;
+
+		std::cout << green("NDDL files successfully generated.") << std::endl << std::endl;
+
+		std::cout << "Saving files in path \t\t\t" << yellow(c->getOutputFilesPath()) << std::endl;
+		std::cout << "Domain models saved as \t\t\t" << yellow(c->getModelsOutputFileName()) << std::endl;
+		std::cout << "Domain initial state saved as \t\t" << yellow(c->getInitialStateOutputFileName()) << std::endl;
+
+		boost::checked_delete(c);
+
+		return EXIT_SUCCESS;
+	}
+	catch (const std::exception& e)
+	{
+		std::string errorMsg = e.what();
+
 		std::cout << red("[FAIL]") << std::endl;
-		return die(c->getErrorText());
+		std::cout << std::flush;
+		std::cerr << std::endl << red("Error. " + errorMsg) << std::endl;
+
+		boost::checked_delete(c);
+
+		return EXIT_FAILURE;
 	}
 
-	std::cout << green("[OK]") << std::endl;
-	std::cout << "Parsing SDF...\t\t\t\t";
-
-	if (!c->parseSdf())
-	{
-		std::cout << red("[FAIL]") << std::endl;
-		return die(c->getErrorText());
-	}
-
-	std::cout << green("[OK]") << std::endl;
-	std::cout << "Generating NDDL files...\t\t";
-
-	if (!c->generateNddl())
-	{
-		std::cout << red("[FAIL]") << std::endl;
-		return die(c->getErrorText());
-	}
-
-	std::cout << green("[OK]") << std::endl << std::endl;
-
-	std::cout << green("NDDL files successfully generated.") << std::endl << std::endl;
-
-	std::cout << "Saving files in path \t\t\t" << yellow(c->getOutputFilesPath()) << std::endl;
-	std::cout << "Domain models saved as \t\t\t" << yellow(c->getModelsOutputFileName()) << std::endl;
-	std::cout << "Domain initial state saved as \t\t" << yellow(c->getInitialStateOutputFileName()) << std::endl;
-
-	boost::checked_delete(c);
-	return EXIT_SUCCESS;
 }
 
 void printLicense()
@@ -130,11 +131,4 @@ std::string yellow(std::string text)
 std::string blue(std::string text)
 {
 	return color(text, 4);
-}
-
-int die(std::string errorText)
-{
-	std::cout << std::flush;
-	std::cerr << std::endl << red("Error. " + errorText) << std::endl;
-	return EXIT_FAILURE;
 }
