@@ -44,8 +44,10 @@ bool _verbose = false;
 
 int main(int argc, char* argv[])
 {
+	// Process arguments and initialize variables
 	int processCode = processArguments(argc, argv);
 
+	// Check if argument processing failed or the program finished
 	if (processCode == -1)
 	{
 		return EXIT_FAILURE;
@@ -55,20 +57,27 @@ int main(int argc, char* argv[])
 		return EXIT_SUCCESS;
 	}
 
+	// Create nddlgen controller
 	nddlgen::Controller* c = new nddlgen::Controller();
 
+	// Set adapter so that the nddlgen-core knows what accesses it
 	c->setAdapter("nddlgen-cli v" + _nddlgenCliVersion);
 
+	// If output path was set, pass it to the controller
 	if (_outpath != "")
 	{
 		c->setOutputFilesPath(_outpath);
 	}
 
+	// Print header if verbose
 	printNewLine(yellow("nddlgen-cli v" + _nddlgenCliVersion + " using nddlgen-core v"
 			+ nddlgen::utilities::Meta::NDDLGEN_VERSION));
 
+	// Print license header if verbose
 	printLicense();
 
+	// Run the workflow all outputs work only if verbose.
+	// Catch any exceptions and print them (even if not verbose)
 	try
 	{
 		printNewLine("Processing file\t\t\t\t" + yellow(_infile));
