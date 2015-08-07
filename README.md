@@ -2,7 +2,23 @@
 
 ## General
 
-This package is the CLI to use the nddl-generator-core library.
+This package is the CLI to use the nddlgen-core library.
+
+## Parameters
+
+### Single command parameters
+These parameters just work if the program is called with one of them
+
+ * `--core-version`, `-c` - Version of nddlgen-core
+ * `--version`, `-v` - Version of nddlgen-cli
+ * `--help`, `-h` - Help
+ 
+### Multi command parameters
+This parameters can be applied in arbitrary order and permutation
+
+ * `--infile`, `-i` - Input file ("filename.sdf", "../relative/path/filename.sdf", "/abs/olute/path/filename.sdf")
+ * `--outpath`, `-o` - Output path. If not set, the path of --infile is used
+ * `--verbose`, `-b` - Verbose output
 
 ## Dependencies
 
