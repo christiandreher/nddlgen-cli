@@ -345,7 +345,7 @@ void printUsageOrHelp(std::string calledName, bool help)
 		std::cout << "  --core-version, -c Version of nddlgen-core" << std::endl;
 		std::cout << "  --version, -v Version of nddlgen-cli" << std::endl;
 		std::cout << "  --verbose, -x Verbose output" << std::endl;
-		std::cout << "  --force-overwrite, f Force overwrite if files exist" << std::endl << std::endl;
+		std::cout << "  --force-overwrite, -f Force overwrite if files exist" << std::endl << std::endl;
 
 		std::cout << "Arguments:" << std::endl;
 		std::cout << "  --in-sdf Input SDF file (relative or absolute). Mandatory." << std::endl;
