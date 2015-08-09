@@ -350,7 +350,7 @@ void printUsageOrHelp(std::string calledName, bool help)
 		std::cout << "Arguments:" << std::endl;
 		std::cout << "  --in-sdf Input SDF file (relative or absolute). Mandatory." << std::endl;
 		std::cout << "  --in-isd Input ISD file (relative or absolute). Mandatory." << std::endl;
-		std::cout << "  --out-path Output path (relative or absolute). If not set, the path of --infile is used"
+		std::cout << "  --out-path Output path (relative or absolute). If not set, the path of --in-sdf is used"
 				<< std::endl << std::endl;
 	}
 	else

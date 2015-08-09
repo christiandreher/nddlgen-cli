@@ -20,7 +20,7 @@ This parameters can be applied in arbitrary order and permutation
  * `--force-overwrite`, `-f` - Force overwrite all already existing files
  * `--in-sdf` - Input SDF file (absolute or relative)
  * `--in-isd` - Input ISD file (absolute or relative)
- * `--out-path` - Output path (absolute or relative). If not set, the path of --infile is used
+ * `--out-path` - Output path (absolute or relative). If not set, the path of --in-sdf is used
 
 ## Dependencies
 
