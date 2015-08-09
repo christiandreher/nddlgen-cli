@@ -16,15 +16,17 @@ These parameters just work if the program is called with one of them
 ### Multi command parameters
 This parameters can be applied in arbitrary order and permutation
 
- * `--infile`, `-i` - Input file ("filename.sdf", "../relative/path/filename.sdf", "/abs/olute/path/filename.sdf")
- * `--outpath`, `-o` - Output path. If not set, the path of --infile is used
- * `--verbose`, `-b` - Verbose output
+ * `--verbose`, `-x` - Verbose output
+ * `--force-overwrite`, `-f` - Force overwrite all already existing files
+ * `--in-sdf` - Input SDF file (absolute or relative)
+ * `--in-isd` - Input ISD file (absolute or relative)
+ * `--out-path` - Output path (absolute or relative). If not set, the path of --infile is used
 
 ## Dependencies
 
 ### Compiler
 
-#### Include paths (-l)
+#### Include paths (-I)
  * *path to sdformat-2.3*
  * *path to nddl-generator-core/src*
 
@@ -37,11 +39,11 @@ This parameters can be applied in arbitrary order and permutation
 ### Linker
 
 #### Libraries (-l)
- * nddl-generator-core
- * sdfformat (part of libsdfformat2-dev)
+ * nddlgen-core
  * boost_date_time (part of libboost-all-dev)
  * boost_filesystem (part of libboost-all-dev)
  * boost_system (part of libboost-all-dev)
+ * sdfformat (part of libsdfformat2-dev)
 
 #### Include Paths (-L)
  * *path to nddl-generator-core .a file*
