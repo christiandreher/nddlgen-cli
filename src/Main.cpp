@@ -46,7 +46,7 @@ std::string yellow(std::string text);
 std::string blue(std::string text);
 
 // Version of nddlgen-cli
-std::string _nddlgenCliVersion = "2.1.0";
+std::string _nddlgenCliVersion = "2.1.1";
 
 // CLI arguments
 bool _help = false;
@@ -173,6 +173,8 @@ int main(int argc, char* argv[])
 		printNewLine(green("[OK]"));
 
 		printNewLine();
+		printNewLine(green("NDDL model file successfully generated."));
+		printNewLine();
 
 		printNewLine("Processing file\t\t\t\t\t" + yellow(c->getInputIsdFileName()));
 
@@ -226,11 +228,10 @@ int main(int argc, char* argv[])
 		printNewLine(green("[OK]"));
 
 		printNewLine();
-
-		printNewLine(green("NDDL files successfully generated."));
+		printNewLine(green("NDDL initial state file successfully generated."));
 		printNewLine();
 
-		printNewLine("Saving files in path \t\t\t" + yellow(c->getOutputFilesPath()));
+		printNewLine("Saved files in path \t\t\t" + yellow(c->getOutputFilesPath()));
 		printNewLine("Domain models saved as \t\t\t" + yellow(c->getModelsOutputFileName()));
 		printNewLine("Domain initial state saved as \t\t" + yellow(c->getInitialStateOutputFileName()));
 
