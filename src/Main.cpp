@@ -14,59 +14,91 @@
  * limitations under the License.
  */
 
-#include <iostream>
 #include <cstdlib>
+#include <exception>
+#include <iostream>
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <nddlgen/Controller.h>
+#include <nddlgen/exceptions/FileAlreadyExists.hpp>
 
-int processArguments(int argc, char* argv[]);
-std::string getOptionValue(int argc, char* argv[], std::string longOptionName, std::string shortOptionName);
+// CLI argument helpers
+void processArguments(int argc, char* argv[]);
+std::string getOptionValue(int argc, char* argv[], std::string longOptionName);
 bool isOptionSet(int argc, char* argv[], std::string longOptionName, std::string shortOptionName);
 
+// Output helpers
 void printUsage(std::string calledName);
+void printHelp(std::string calledName);
+void printUsageOrHelp(std::string calledName, bool help);
 void printLicense();
 void print(std::string);
 void printNewLine();
 void printNewLine(std::string);
 
+// Coloring text helpers
 std::string color(std::string text, int colorCode);
 std::string red(std::string text);
 std::string green(std::string text);
 std::string yellow(std::string text);
 std::string blue(std::string text);
 
-std::string _nddlgenCliVersion = "2.0.1";
-std::string _infile = "";
-std::string _outpath = "";
+// Version of nddlgen-cli
+std::string _nddlgenCliVersion = "2.1.0";
+
+// CLI arguments
+bool _help = false;
+bool _coreVersion = false;
+bool _version = false;
+
+std::string _inputSdfFile = "";
+std::string _inputIsdFile = "";
+std::string _outputPath = "";
 bool _verbose = false;
+bool _forceOverwrite = false;
 
 int main(int argc, char* argv[])
 {
-	// Process arguments and initialize variables
-	int processCode = processArguments(argc, argv);
+	std::string calledName(argv[0]);
 
-	// Check if argument processing failed or the program finished
-	if (processCode == -1)
+	// Check if program was called with arguments.
+	if (argc == 1)
 	{
+		printUsage(calledName);
 		return EXIT_FAILURE;
 	}
-	else if (processCode == 1)
+
+	// Process arguments and initialize variables.
+	processArguments(argc, argv);
+
+	// Check if help was called.
+	if (_help)
 	{
+		printHelp(calledName);
 		return EXIT_SUCCESS;
 	}
 
-	// Create nddlgen controller
-	nddlgen::Controller* c = new nddlgen::Controller();
-
-	// Set adapter so that the nddlgen-core knows what accesses it
-	c->setAdapter("nddlgen-cli v" + _nddlgenCliVersion);
-
-	// If output path was set, pass it to the controller
-	if (_outpath != "")
+	// Check if version of core was requested.
+	if (_coreVersion)
 	{
-		c->setOutputFilesPath(_outpath);
+		std::cout << nddlgen::utilities::Meta::NDDLGEN_VERSION << std::endl;
+		return EXIT_SUCCESS;
+	}
+
+	// Check if nddlgen-cli verson was requested.
+	if (_version)
+	{
+		std::cout << _nddlgenCliVersion << std::endl;
+		return EXIT_SUCCESS;
+	}
+
+	// Check if mandatory parameters where set
+	if (_inputSdfFile == "" || _inputIsdFile == "")
+	{
+		printUsage(calledName);
+		return EXIT_FAILURE;
 	}
 
 	// Print header if verbose
@@ -76,24 +108,123 @@ int main(int argc, char* argv[])
 	// Print license header if verbose
 	printLicense();
 
-	// Run the workflow all outputs work only if verbose.
-	// Catch any exceptions and print them (even if not verbose)
+	// Create nddlgen controller
+	nddlgen::Controller* c = new nddlgen::Controller();
+
+	// Run the workflow. All outputs work only if verbose.
+	// Catch any exceptions and print them (even if not verbose).
 	try
 	{
-		printNewLine("Processing file\t\t\t\t" + yellow(_infile));
+		// Initialize controller
+		c->setAdapter("nddlgen-cli v" + _nddlgenCliVersion);
+		c->setInputSdfFile(_inputSdfFile);
+		c->setInputIsdFile(_inputIsdFile);
+		c->setOutputFilesPath(_outputPath);
 
-		print("Checking file...\t\t\t");
-		c->setFileIdentifier(_infile);
-		c->checkFile();
+		printNewLine("Processing file\t\t\t\t\t" + yellow(c->getInputSdfFileName()));
+
+		print("Checking SDF file...\t\t\t\t");
+		c->checkSdfInput();
 		printNewLine(green("[OK]"));
 
-		print("Parsing SDF...\t\t\t\t");
+		print("Parsing SDF...\t\t\t\t\t");
 		c->parseSdf();
 		printNewLine(green("[OK]"));
 
-		print("Generating NDDL files...\t\t");
-		c->generateNddl();
+		print("Generating NDDL model file...\t\t\t");
+
+		try
+		{
+			c->generateNddlModel(_forceOverwrite);
+		}
+		catch(const nddlgen::exceptions::FileAlreadyExists& e)
+		{
+			std::string errorMessage(e.what());
+			char overwrite;
+
+			printNewLine(yellow("[WARN]"));
+			printNewLine();
+
+			if (_verbose)
+			{
+				std::cout << yellow("Warning. " + errorMessage) << std::endl << "Overwrite existing file? [y/N] ";
+			}
+			else
+			{
+				std::cout << "Warning. " << errorMessage << std::endl << "Overwrite existing file? [y/N] ";
+			}
+
+			overwrite = std::getchar();
+
+			printNewLine();
+			print("Overwriting existing NDDL model file...\t\t");
+
+			if (overwrite == 'Y' || overwrite == 'y')
+			{
+				c->generateNddlModel(true);
+			}
+			else
+			{
+
+				throw std::runtime_error("Aborted due to user request.");
+			}
+		}
+
 		printNewLine(green("[OK]"));
+
+		printNewLine();
+
+		printNewLine("Processing file\t\t\t\t\t" + yellow(c->getInputIsdFileName()));
+
+		print("Checking ISD file...\t\t\t\t");
+		c->checkIsdInput();
+		printNewLine(green("[OK]"));
+
+		print("Parsing ISD...\t\t\t\t\t");
+		c->parseIsd();
+		printNewLine(green("[OK]"));
+
+		print("Generating NDDL initial state file...\t\t");
+
+		try
+		{
+			c->generateNddlInitialState(_forceOverwrite);
+		}
+		catch(const nddlgen::exceptions::FileAlreadyExists& e)
+		{
+			std::string errorMessage(e.what());
+			char overwrite;
+
+			printNewLine(yellow("[WARN]"));
+			printNewLine();
+
+			if (_verbose)
+			{
+				std::cout << yellow("Warning. " + errorMessage) << std::endl << "Overwrite existing file? [y/N] ";
+			}
+			else
+			{
+				std::cout << "Warning. " << errorMessage << std::endl << "Overwrite existing file? [y/N] ";
+			}
+
+			overwrite = std::getchar();
+
+			printNewLine();
+			print("Overwriting existing NDDL initial state file...\t\t");
+
+			if (overwrite == 'Y' || overwrite == 'y')
+			{
+				c->generateNddlInitialState(true);
+			}
+			else
+			{
+
+				throw std::runtime_error("Aborted due to user request.");
+			}
+		}
+
+		printNewLine(green("[OK]"));
+
 		printNewLine();
 
 		printNewLine(green("NDDL files successfully generated."));
@@ -131,72 +262,26 @@ int main(int argc, char* argv[])
 }
 
 
-int processArguments(int argc, char* argv[])
+void processArguments(int argc, char* argv[])
 {
-	std::string calledName(argv[0]);
+	_help = isOptionSet(argc, argv, "help", "h");
+	_coreVersion = isOptionSet(argc, argv, "core-version", "c");
+	_version = isOptionSet(argc, argv, "version", "v");
 
-	bool help = isOptionSet(argc, argv, "help", "h");
-	bool coreVersion = isOptionSet(argc, argv, "core-version", "c");
-	bool version = isOptionSet(argc, argv, "version", "v");
-	bool verbose = isOptionSet(argc, argv, "verbose", "b");
-
-	std::string infile = getOptionValue(argc, argv, "infile", "i");
-	std::string outpath = getOptionValue(argc, argv, "outpath", "o");
-
-	if (argc == 1)
-	{
-		printUsage(calledName);
-		return -1;
-	}
-
-	if (help)
-	{
-		printUsage(calledName);
-		return 1;
-	}
-
-	if (coreVersion)
-	{
-		std::cout << nddlgen::utilities::Meta::NDDLGEN_VERSION << std::endl;
-		return 1;
-	}
-
-	if (version)
-	{
-		std::cout << _nddlgenCliVersion << std::endl;
-		return 1;
-	}
-
-	if (verbose)
-	{
-		_verbose = true;
-	}
-
-	if (infile != "")
-	{
-		_infile = infile;
-	}
-	else
-	{
-		printUsage(calledName);
-		return -1;
-	}
-
-	if (outpath != "")
-	{
-		_outpath = outpath;
-	}
-
-	return 0;
+	_verbose = isOptionSet(argc, argv, "verbose", "x");
+	_forceOverwrite = isOptionSet(argc, argv, "force-overwrite", "f");
+	_inputSdfFile = getOptionValue(argc, argv, "in-sdf");
+	_inputIsdFile = getOptionValue(argc, argv, "in-isd");
+	_outputPath = getOptionValue(argc, argv, "out-path");
 }
 
-std::string getOptionValue(int argc, char* argv[], std::string longOptionName, std::string shortOptionName)
+std::string getOptionValue(int argc, char* argv[], std::string longOptionName)
 {
 	for (int i = 1; i < argc; i++)
 	{
 		std::string arg = argv[i];
 
-		if (arg == "--" + longOptionName || arg == "-" + shortOptionName)
+		if (arg == "--" + longOptionName)
 		{
 			if (i + 1 == argc)
 			{
@@ -220,6 +305,11 @@ bool isOptionSet(int argc, char* argv[], std::string longOptionName, std::string
 		{
 			return true;
 		}
+		else if (!boost::starts_with(arg, "--") && boost::starts_with(arg, "-")
+			&& boost::contains(arg, shortOptionName))
+		{
+			return true;
+		}
 	}
 
 	return false;
@@ -228,24 +318,52 @@ bool isOptionSet(int argc, char* argv[], std::string longOptionName, std::string
 
 void printUsage(std::string calledName)
 {
+	printUsageOrHelp(calledName, false);
+}
+
+void printHelp(std::string calledName)
+{
+	printUsageOrHelp(calledName, true);
+}
+
+void printUsageOrHelp(std::string calledName, bool help)
+{
 	std::cout << "nddlgen-cli v" << _nddlgenCliVersion << " using nddlgen-core v"
 			<< nddlgen::utilities::Meta::NDDLGEN_VERSION << std::endl;
 	std::cout << "nddlgen is a program suite to generate .nddl files out of Gazebo's .sdf"
 			<< std::endl << std::endl;
 
 	std::cout << "Usage:" << std::endl;
-	std::cout << "  " << calledName << " [options] --infile <input_file> [--outpath <output_path>]"
+	std::cout << "  " << calledName << " [options] --in-sdf <sdf_file> --in-isd <isd_file> [--out-path <output_path>]"
 			<< std::endl << std::endl;
 
-	std::cout << "Options:" << std::endl;
-	std::cout << "  --help, -h - Print help" << std::endl;
-	std::cout << "  --core-version, -c - Version of nddlgen-core" << std::endl;
-	std::cout << "  --version, -v - Version of nddlgen-cli" << std::endl;
-	std::cout << "  --verbose, -b - Verbose output" << std::endl << std::endl;
+	if (help)
+	{
+		std::cout << "Options:" << std::endl;
+		std::cout << "  --help, -h Print help" << std::endl;
+		std::cout << "  --core-version, -c Version of nddlgen-core" << std::endl;
+		std::cout << "  --version, -v Version of nddlgen-cli" << std::endl;
+		std::cout << "  --verbose, -x Verbose output" << std::endl;
+		std::cout << "  --force-overwrite, f Force overwrite if files exist" << std::endl << std::endl;
 
-	std::cout << "Arguments:" << std::endl;
-	std::cout << "  --infile, -i - Input file (relative or absolute). Mandatory." << std::endl;
-	std::cout << "  --outpath, -o - Output path (relative or absolute). If not set, the path of --infile is used" << std::endl;
+		std::cout << "Arguments:" << std::endl;
+		std::cout << "  --in-sdf Input SDF file (relative or absolute). Mandatory." << std::endl;
+		std::cout << "  --in-isd Input ISD file (relative or absolute). Mandatory." << std::endl;
+		std::cout << "  --out-path Output path (relative or absolute). If not set, the path of --infile is used"
+				<< std::endl << std::endl;
+	}
+	else
+	{
+		std::cout << "For more help, type:" << std::endl;
+		std::cout << "  " << calledName << " -h" << std::endl << std::endl;
+	}
+
+	std::cout << "nddlgen Homepage:" << std::endl;
+	std::cout << "  <" << nddlgen::utilities::Meta::NDDLGEN_PROJECT_HOMEPAGE << ">" << std::endl;
+	std::cout << "Author:" << std::endl;
+	std::cout << "  Christian Dreher <" << nddlgen::utilities::Meta::AUTHOR_CHR_DREHER_EMAIL << ">" << std::endl;
+	std::cout << "Support:" << std::endl;
+	std::cout << "  <" << nddlgen::utilities::Meta::NDDLGEN_SUPPORT_EMAIL << ">" << std::endl;
 }
 
 void printLicense()
