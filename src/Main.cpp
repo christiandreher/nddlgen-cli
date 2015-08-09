@@ -46,7 +46,7 @@ std::string yellow(std::string text);
 std::string blue(std::string text);
 
 // Version of nddlgen-cli
-std::string _nddlgenCliVersion = "2.1.1";
+std::string _nddlgenCliVersion = "0.2.1";
 
 // CLI arguments
 bool _help = false;
