@@ -22,7 +22,8 @@
 #include <boost/lexical_cast.hpp>
 
 #include <nddlgen/Controller.h>
-#include <nddlgen/exceptions/FileAlreadyExists.hpp>
+#include <nddlgen/exceptions/FileAlreadyExistsException.hpp>
+#include <nddlgen/utilities/ControllerConfig.h>
 
 // CLI argument helpers
 void processArguments(int argc, char* argv[]);
@@ -46,7 +47,10 @@ std::string yellow(std::string text);
 std::string blue(std::string text);
 
 // Version of nddlgen-cli
-std::string _nddlgenCliVersion = "0.2.1";
+std::string _nddlgenCliVersion = "0.2.3";
+
+// Supported nddlgen-core version (major.minor.)
+std::string _supportedNddlgenCoreVersion = "0.3.";
 
 // CLI arguments
 bool _help = false;
@@ -108,36 +112,53 @@ int main(int argc, char* argv[])
 	// Print license header if verbose
 	printLicense();
 
-	// Create nddlgen controller
-	nddlgen::Controller* c = new nddlgen::Controller();
+	// Create nddlgen controller configuration
+	nddlgen::utilities::ControllerConfig* cc = new nddlgen::utilities::ControllerConfig();
+
+	// Initialize controller config (setting adapter name and version, input files, output path)
+	cc->setAdapter("nddlgen-cli v" + _nddlgenCliVersion);
+	cc->setSdfInputFile(_inputSdfFile);
+	cc->setIsdInputFile(_inputIsdFile);
+	cc->setOutputFilesPath(_outputPath);
+
+	// Throw warning if installed nddlgen-core version differs too much from the supported version
+	if (!boost::starts_with(nddlgen::utilities::Meta::NDDLGEN_VERSION, _supportedNddlgenCoreVersion))
+	{
+		printNewLine(yellow("Warning. This version of nddlgen-cli was intended for nddlgen-core v"
+				+ _supportedNddlgenCoreVersion + "x"));
+		printNewLine(yellow("If you experience problems, try one of the supported versions of nddlgen-core."));
+		printNewLine();
+	}
+
+	// Create nddlgen controller, passing config
+	nddlgen::Controller* c = new nddlgen::Controller(cc);
 
 	// Run the workflow. All outputs work only if verbose.
 	// Catch any exceptions and print them (even if not verbose).
 	try
 	{
-		// Initialize controller
-		c->setAdapter("nddlgen-cli v" + _nddlgenCliVersion);
-		c->setInputSdfFile(_inputSdfFile);
-		c->setInputIsdFile(_inputIsdFile);
-		c->setOutputFilesPath(_outputPath);
+		printNewLine("Processing files\t\t\t" + yellow(cc->getSdfInputFileName())
+				+ ", " + yellow(cc->getIsdInputFileName()));
 
-		printNewLine("Processing file\t\t\t\t\t" + yellow(c->getInputSdfFileName()));
-
-		print("Checking SDF file...\t\t\t\t");
-		c->checkSdfInput();
+		print("Parsing SDF file...\t\t\t");
+		c->parseSdfInputFile();
 		printNewLine(green("[OK]"));
 
-		print("Parsing SDF...\t\t\t\t\t");
-		c->parseSdf();
+		print("Parsing ISD file...\t\t\t");
+		c->parseIsdInputFile();
 		printNewLine(green("[OK]"));
 
-		print("Generating NDDL model file...\t\t\t");
+		print("Building domain description...\t\t");
+		c->buildDomainDescription();
+		printNewLine(green("[OK]"));
+
+		print("Generating NDDL model file...\t\t");
 
 		try
 		{
-			c->generateNddlModel(_forceOverwrite);
+			c->writeNddlModelFile(_forceOverwrite);
 		}
-		catch(const nddlgen::exceptions::FileAlreadyExists& e)
+		catch(const nddlgen::exceptions::FileAlreadyExistsException& e)
 		{
 			std::string errorMessage(e.what());
 			char overwrite;
@@ -161,7 +182,7 @@ int main(int argc, char* argv[])
 
 			if (overwrite == 'Y' || overwrite == 'y')
 			{
-				c->generateNddlModel(true);
+				c->writeNddlModelFile(true);
 			}
 			else
 			{
@@ -172,27 +193,13 @@ int main(int argc, char* argv[])
 
 		printNewLine(green("[OK]"));
 
-		printNewLine();
-		printNewLine(green("NDDL model file successfully generated."));
-		printNewLine();
-
-		printNewLine("Processing file\t\t\t\t\t" + yellow(c->getInputIsdFileName()));
-
-		print("Checking ISD file...\t\t\t\t");
-		c->checkIsdInput();
-		printNewLine(green("[OK]"));
-
-		print("Parsing ISD...\t\t\t\t\t");
-		c->parseIsd();
-		printNewLine(green("[OK]"));
-
-		print("Generating NDDL initial state file...\t\t");
+		print("Generating NDDL initial state file...\t");
 
 		try
 		{
-			c->generateNddlInitialState(_forceOverwrite);
+			c->writeNddlInitialStateFile(_forceOverwrite);
 		}
-		catch(const nddlgen::exceptions::FileAlreadyExists& e)
+		catch(const nddlgen::exceptions::FileAlreadyExistsException& e)
 		{
 			std::string errorMessage(e.what());
 			char overwrite;
@@ -216,7 +223,7 @@ int main(int argc, char* argv[])
 
 			if (overwrite == 'Y' || overwrite == 'y')
 			{
-				c->generateNddlInitialState(true);
+				c->writeNddlInitialStateFile(true);
 			}
 			else
 			{
@@ -228,14 +235,15 @@ int main(int argc, char* argv[])
 		printNewLine(green("[OK]"));
 
 		printNewLine();
-		printNewLine(green("NDDL initial state file successfully generated."));
+		printNewLine(green("NDDL files successfully generated."));
 		printNewLine();
 
-		printNewLine("Saved files in path \t\t\t" + yellow(c->getOutputFilesPath()));
-		printNewLine("Domain models saved as \t\t\t" + yellow(c->getModelsOutputFileName()));
-		printNewLine("Domain initial state saved as \t\t" + yellow(c->getInitialStateOutputFileName()));
+		printNewLine("Saved files in path \t\t\t" + yellow(cc->getOutputFilesPath()));
+		printNewLine("Domain models saved as \t\t\t" + yellow(cc->getOutputModelFileName()));
+		printNewLine("Domain initial state saved as \t\t" + yellow(cc->getOutputInitialStateFileName()));
 
 		boost::checked_delete(c);
+		boost::checked_delete(cc);
 
 		return EXIT_SUCCESS;
 	}
@@ -256,6 +264,7 @@ int main(int argc, char* argv[])
 		}
 
 		boost::checked_delete(c);
+		boost::checked_delete(cc);
 
 		return EXIT_FAILURE;
 	}
@@ -302,10 +311,12 @@ bool isOptionSet(int argc, char* argv[], std::string longOptionName, std::string
 	{
 		std::string arg = argv[i];
 
+		// If option is explicitly set (e.g. "-x -y -z")
 		if (arg == "--" + longOptionName || arg == "-" + shortOptionName)
 		{
 			return true;
 		}
+		// If option is implicitly set (e.g. "-xyz")
 		else if (!boost::starts_with(arg, "--") && boost::starts_with(arg, "-")
 			&& boost::contains(arg, shortOptionName))
 		{
@@ -373,7 +384,7 @@ void printLicense()
 	{
 		std::cout << std::endl;
 		std::cout << blue("  Copyright 2015 Christian Dreher (dreher@charlydelta.org)") << std::endl;
-		std::cout << blue(" ") << std::endl;
+		std::cout << std::endl;
 		std::cout << blue("  This software is distributed on an \"AS IS\" BASIS, WITHOUT") << std::endl;
 		std::cout << blue("  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.") << std::endl;
 		std::cout << std::endl;
