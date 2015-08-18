@@ -21,9 +21,8 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include <nddlgen/Controller.h>
+#include <nddlgen.h>
 #include <nddlgen/exceptions/FileAlreadyExistsException.hpp>
-#include <nddlgen/utilities/ControllerConfig.h>
 
 // CLI argument helpers
 void processArguments(int argc, char* argv[]);
@@ -47,10 +46,10 @@ std::string yellow(std::string text);
 std::string blue(std::string text);
 
 // Version of nddlgen-cli
-std::string _nddlgenCliVersion = "0.2.3";
+std::string _nddlgenCliVersion = "0.2.4";
 
 // Supported nddlgen-core version (major.minor.)
-std::string _supportedNddlgenCoreVersion = "0.3.";
+std::string _supportedNddlgenCoreVersion = "0.5";
 
 // CLI arguments
 bool _help = false;
@@ -87,7 +86,7 @@ int main(int argc, char* argv[])
 	// Check if version of core was requested.
 	if (_coreVersion)
 	{
-		std::cout << nddlgen::utilities::Meta::NDDLGEN_VERSION << std::endl;
+		std::cout << nddlgen::VERSION << std::endl;
 		return EXIT_SUCCESS;
 	}
 
@@ -107,13 +106,13 @@ int main(int argc, char* argv[])
 
 	// Print header if verbose
 	printNewLine(yellow("nddlgen-cli v" + _nddlgenCliVersion + " using nddlgen-core v"
-			+ nddlgen::utilities::Meta::NDDLGEN_VERSION));
+			+ nddlgen::VERSION));
 
 	// Print license header if verbose
 	printLicense();
 
 	// Create nddlgen controller configuration
-	nddlgen::utilities::ControllerConfig* cc = new nddlgen::utilities::ControllerConfig();
+	nddlgen::ControllerConfig* cc = new nddlgen::ControllerConfig();
 
 	// Initialize controller config (setting adapter name and version, input files, output path)
 	cc->setAdapter("nddlgen-cli v" + _nddlgenCliVersion);
@@ -121,8 +120,8 @@ int main(int argc, char* argv[])
 	cc->setIsdInputFile(_inputIsdFile);
 	cc->setOutputFilesPath(_outputPath);
 
-	// Throw warning if installed nddlgen-core version differs too much from the supported version
-	if (!boost::starts_with(nddlgen::utilities::Meta::NDDLGEN_VERSION, _supportedNddlgenCoreVersion))
+	// Throw warning if installed nddlgen-core version differs to much from the supported version
+	if (!boost::starts_with(nddlgen::VERSION, _supportedNddlgenCoreVersion + "."))
 	{
 		printNewLine(yellow("Warning. This version of nddlgen-cli was intended for nddlgen-core v"
 				+ _supportedNddlgenCoreVersion + "x"));
@@ -341,7 +340,7 @@ void printHelp(std::string calledName)
 void printUsageOrHelp(std::string calledName, bool help)
 {
 	std::cout << "nddlgen-cli v" << _nddlgenCliVersion << " using nddlgen-core v"
-			<< nddlgen::utilities::Meta::NDDLGEN_VERSION << std::endl;
+			<< nddlgen::VERSION << std::endl;
 	std::cout << "nddlgen is a program suite to generate .nddl files out of Gazebo's .sdf"
 			<< std::endl << std::endl;
 
