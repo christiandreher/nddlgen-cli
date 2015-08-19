@@ -22,6 +22,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include <nddlgen.h>
+#include <nddlgen/controllers/ModelFactory.h>
 #include <nddlgen/exceptions/FileAlreadyExistsException.hpp>
 
 // CLI argument helpers
@@ -46,10 +47,10 @@ std::string yellow(std::string text);
 std::string blue(std::string text);
 
 // Version of nddlgen-cli
-std::string _nddlgenCliVersion = "0.2.4";
+std::string _nddlgenCliVersion = "0.3.4";
 
 // Supported nddlgen-core version (major.minor.)
-std::string _supportedNddlgenCoreVersion = "0.5";
+std::string _supportedNddlgenCoreVersion = "0.6";
 
 // CLI arguments
 bool _help = false;
@@ -119,6 +120,7 @@ int main(int argc, char* argv[])
 	cc->setSdfInputFile(_inputSdfFile);
 	cc->setIsdInputFile(_inputIsdFile);
 	cc->setOutputFilesPath(_outputPath);
+	cc->setModelFactory(new nddlgen::controllers::ModelFactory());
 
 	// Throw warning if installed nddlgen-core version differs to much from the supported version
 	if (!boost::starts_with(nddlgen::VERSION, _supportedNddlgenCoreVersion + "."))
@@ -132,7 +134,7 @@ int main(int argc, char* argv[])
 	// Create nddlgen controller, passing config
 	nddlgen::Controller* c = new nddlgen::Controller(cc);
 
-	// Run the workflow. All outputs work only if verbose.
+	// Run the workflow. All outputs except for warnings and exceptions work only if verbose.
 	// Catch any exceptions and print them (even if not verbose).
 	try
 	{
