@@ -49,8 +49,8 @@ std::string blue(std::string text);
 // Version of nddlgen-cli
 std::string _nddlgenCliVersion = "0.3.4";
 
-// Supported nddlgen-core version (major.minor.)
-std::string _supportedNddlgenCoreVersion = "0.6";
+// Supported nddlgen-core version (major.minor)
+std::string _supportedNddlgenCoreVersion = "0.7";
 
 // CLI arguments
 bool _help = false;
@@ -159,7 +159,7 @@ int main(int argc, char* argv[])
 		{
 			c->writeNddlModelFile(_forceOverwrite);
 		}
-		catch(const nddlgen::exceptions::FileAlreadyExistsException& e)
+		catch (const nddlgen::exceptions::FileAlreadyExistsException& e)
 		{
 			std::string errorMessage(e.what());
 			char overwrite;
@@ -200,7 +200,7 @@ int main(int argc, char* argv[])
 		{
 			c->writeNddlInitialStateFile(_forceOverwrite);
 		}
-		catch(const nddlgen::exceptions::FileAlreadyExistsException& e)
+		catch (const nddlgen::exceptions::FileAlreadyExistsException& e)
 		{
 			std::string errorMessage(e.what());
 			char overwrite;

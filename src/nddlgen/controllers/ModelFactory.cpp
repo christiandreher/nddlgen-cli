@@ -28,10 +28,11 @@ nddlgen::controllers::ModelFactory::~ModelFactory()
 
 void nddlgen::controllers::ModelFactory::registerNddlGeneratables()
 {
-	this->registerNddlGeneratable("LidBox", &nddlgen::controllers::ModelFactory::createLidBox);
+	// Order of registration is arbitrary. Model names don't have to be prefix free
 	this->registerNddlGeneratable("Box", &nddlgen::controllers::ModelFactory::createBox);
-	this->registerNddlGeneratable("ObjectSlideContainer", &nddlgen::controllers::ModelFactory::createObjectSlideContainer);
+	this->registerNddlGeneratable("LidBox", &nddlgen::controllers::ModelFactory::createLidBox);
 	this->registerNddlGeneratable("ObjectSlide", &nddlgen::controllers::ModelFactory::createObjectSlide);
+	this->registerNddlGeneratable("ObjectSlideContainer", &nddlgen::controllers::ModelFactory::createObjectSlideContainer);
 }
 
 nddlgen::models::NddlGeneratable* nddlgen::controllers::ModelFactory::createBox()
