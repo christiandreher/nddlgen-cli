@@ -35,7 +35,7 @@ namespace nddlgen { namespace models
 
 	ObjectSlideContainerModel::~ObjectSlideContainerModel()
 	{
-		// TODO Auto-generated destructor stub
+
 	}
 
 
