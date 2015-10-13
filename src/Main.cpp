@@ -47,7 +47,7 @@ std::string yellow(std::string text);
 std::string blue(std::string text);
 
 // Version of nddlgen-cli
-std::string _nddlgenCliVersion = "0.3.4";
+std::string _nddlgenCliVersion = "0.3.5";
 
 // Supported nddlgen-core version (major.minor)
 std::string _supportedNddlgenCoreVersion = "0.7";
@@ -138,8 +138,9 @@ int main(int argc, char* argv[])
 	// Catch any exceptions and print them (even if not verbose).
 	try
 	{
-		printNewLine("Processing files\t\t\t\t" + yellow(cc->getSdfInputFileName())
-				+ ", " + yellow(cc->getIsdInputFileName()));
+		printNewLine("Processing files\t\t\t\t" + yellow(cc->getSdfInputFileName()) + ", ");
+		printNewLine("\t\t\t\t\t\t" + yellow(cc->getIsdInputFileName()));
+		printNewLine();
 
 		print("Parsing SDF file...\t\t\t\t");
 		c->parseSdfInputFile();
