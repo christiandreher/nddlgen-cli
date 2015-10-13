@@ -138,22 +138,22 @@ int main(int argc, char* argv[])
 	// Catch any exceptions and print them (even if not verbose).
 	try
 	{
-		printNewLine("Processing files\t\t\t" + yellow(cc->getSdfInputFileName())
+		printNewLine("Processing files\t\t\t\t" + yellow(cc->getSdfInputFileName())
 				+ ", " + yellow(cc->getIsdInputFileName()));
 
-		print("Parsing SDF file...\t\t\t");
+		print("Parsing SDF file...\t\t\t\t");
 		c->parseSdfInputFile();
 		printNewLine(green("[OK]"));
 
-		print("Parsing ISD file...\t\t\t");
+		print("Parsing ISD file...\t\t\t\t");
 		c->parseIsdInputFile();
 		printNewLine(green("[OK]"));
 
-		print("Building domain description...\t\t");
+		print("Building domain description...\t\t\t");
 		c->buildDomainDescription();
 		printNewLine(green("[OK]"));
 
-		print("Generating NDDL model file...\t\t");
+		print("Generating NDDL model file...\t\t\t");
 
 		try
 		{
@@ -162,39 +162,38 @@ int main(int argc, char* argv[])
 		catch (const nddlgen::exceptions::FileAlreadyExistsException& e)
 		{
 			std::string errorMessage(e.what());
-			char overwrite;
+			std::string overwrite;
 
 			printNewLine(yellow("[WARN]"));
 			printNewLine();
 
 			if (_verbose)
 			{
-				std::cout << yellow("Warning. " + errorMessage) << std::endl << "Overwrite existing file? [y/N] ";
+				std::cout << yellow("Warning. " + errorMessage) << std::endl << "Overwrite existing file? [y/n] ";
 			}
 			else
 			{
-				std::cout << "Warning. " << errorMessage << std::endl << "Overwrite existing file? [y/N] ";
+				std::cout << "Warning. " << errorMessage << std::endl << "Overwrite existing file? [y/n] ";
 			}
 
-			overwrite = std::getchar();
+			std::cin >> overwrite;
 
 			printNewLine();
 			print("Overwriting existing NDDL model file...\t\t");
 
-			if (overwrite == 'Y' || overwrite == 'y')
+			if (overwrite == "Y" || overwrite == "y")
 			{
 				c->writeNddlModelFile(true);
 			}
 			else
 			{
-
 				throw std::runtime_error("Aborted due to user request.");
 			}
 		}
 
 		printNewLine(green("[OK]"));
 
-		print("Generating NDDL initial state file...\t");
+		print("Generating NDDL initial state file...\t\t");
 
 		try
 		{
@@ -203,32 +202,31 @@ int main(int argc, char* argv[])
 		catch (const nddlgen::exceptions::FileAlreadyExistsException& e)
 		{
 			std::string errorMessage(e.what());
-			char overwrite;
+			std::string overwrite;
 
 			printNewLine(yellow("[WARN]"));
 			printNewLine();
 
 			if (_verbose)
 			{
-				std::cout << yellow("Warning. " + errorMessage) << std::endl << "Overwrite existing file? [y/N] ";
+				std::cout << yellow("Warning. " + errorMessage) << std::endl << "Overwrite existing file? [y/n] ";
 			}
 			else
 			{
-				std::cout << "Warning. " << errorMessage << std::endl << "Overwrite existing file? [y/N] ";
+				std::cout << "Warning. " << errorMessage << std::endl << "Overwrite existing file? [y/n] ";
 			}
 
-			overwrite = std::getchar();
+			std::cin >> overwrite;
 
 			printNewLine();
-			print("Overwriting existing NDDL initial state file...\t\t");
+			print("Overwriting existing NDDL initial state file...\t");
 
-			if (overwrite == 'Y' || overwrite == 'y')
+			if (overwrite == "Y" || overwrite == "y")
 			{
 				c->writeNddlInitialStateFile(true);
 			}
 			else
 			{
-
 				throw std::runtime_error("Aborted due to user request.");
 			}
 		}
@@ -239,9 +237,9 @@ int main(int argc, char* argv[])
 		printNewLine(green("NDDL files successfully generated."));
 		printNewLine();
 
-		printNewLine("Saved files in path \t\t\t" + yellow(cc->getOutputFilesPath()));
-		printNewLine("Domain models saved as \t\t\t" + yellow(cc->getOutputModelFileName()));
-		printNewLine("Domain initial state saved as \t\t" + yellow(cc->getOutputInitialStateFileName()));
+		printNewLine("Saved files in path \t\t\t\t" + yellow(cc->getOutputFilesPath()));
+		printNewLine("Domain models saved as \t\t\t\t" + yellow(cc->getOutputModelFileName()));
+		printNewLine("Domain initial state saved as \t\t\t" + yellow(cc->getOutputInitialStateFileName()));
 
 		boost::checked_delete(c);
 		boost::checked_delete(cc);
