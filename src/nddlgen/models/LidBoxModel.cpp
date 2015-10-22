@@ -44,8 +44,8 @@ namespace nddlgen { namespace models
 		std::string openedPredicate = "opened";
 		std::string closedPredicate = "closed";
 
-		nddlgen::utilities::ModelAction* openAction = new nddlgen::utilities::ModelAction();
-		nddlgen::utilities::ModelAction* closeAction = new nddlgen::utilities::ModelAction();
+		nddlgen::utilities::ModelActionPtr openAction(new nddlgen::utilities::ModelAction());
+		nddlgen::utilities::ModelActionPtr closeAction(new nddlgen::utilities::ModelAction());
 
 		this->setClassName("LidBox");
 
@@ -55,10 +55,8 @@ namespace nddlgen { namespace models
 
 		if (this->isBlocked())
 		{
-			foreach (nddlgen::models::NddlGeneratable& generatableModelObject, this->_blockedBy)
+			foreach (nddlgen::models::NddlGeneratablePtr generatableModel, this->_blockedBy)
 			{
-				nddlgen::models::NddlGeneratable* generatableModel = &generatableModelObject;
-
 				openAction->setContainedByCondition(generatableModel->getNamePref(), closedPredicate);
 			}
 		}

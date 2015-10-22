@@ -35,22 +35,26 @@ void nddlgen::controllers::ModelFactory::registerNddlGeneratables()
 	this->registerNddlGeneratable("ObjectSlideContainer", &nddlgen::controllers::ModelFactory::createObjectSlideContainer);
 }
 
-nddlgen::models::NddlGeneratable* nddlgen::controllers::ModelFactory::createBox()
+nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createBox()
 {
-	return new nddlgen::models::BoxModel();
+	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::BoxModel());
+	return model;
 }
 
-nddlgen::models::NddlGeneratable* nddlgen::controllers::ModelFactory::createLidBox()
+nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createLidBox()
 {
-	return new nddlgen::models::LidBoxModel();
+	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::LidBoxModel());
+	return model;
 }
 
-nddlgen::models::NddlGeneratable* nddlgen::controllers::ModelFactory::createObjectSlideContainer()
+nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createObjectSlideContainer()
 {
-	return new nddlgen::models::ObjectSlideContainerModel();
+	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::ObjectSlideContainerModel());
+	return model;
 }
 
-nddlgen::models::NddlGeneratable* nddlgen::controllers::ModelFactory::createObjectSlide()
+nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createObjectSlide()
 {
-	return new nddlgen::models::ObjectSlideModel();
+	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::ObjectSlideModel());
+	return model;
 }

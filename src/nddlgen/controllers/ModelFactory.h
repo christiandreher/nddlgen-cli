@@ -17,6 +17,8 @@
 #ifndef NDDLGEN_CONTROLLERS_MODELFACTORY_H_
 #define NDDLGEN_CONTROLLERS_MODELFACTORY_H_
 
+#include <boost/shared_ptr.hpp>
+
 #include <nddlgen/models/BoxModel.h>
 #include <nddlgen/models/LidBoxModel.h>
 #include <nddlgen/models/ObjectSlideContainerModel.h>
@@ -24,7 +26,14 @@
 #include <nddlgen/models/NddlGeneratable.h>
 #include <nddlgen/controllers/NddlGeneratableFactory.h>
 
-namespace nddlgen { namespace controllers { class ModelFactory; }}
+namespace nddlgen
+{
+	namespace controllers
+	{
+		class ModelFactory;
+		typedef boost::shared_ptr<nddlgen::controllers::ModelFactory> ModelFactoryPtr;
+	}
+}
 
 class nddlgen::controllers::ModelFactory : public nddlgen::controllers::NddlGeneratableFactory
 {
@@ -36,10 +45,10 @@ class nddlgen::controllers::ModelFactory : public nddlgen::controllers::NddlGene
 
 		virtual void registerNddlGeneratables();
 
-		static nddlgen::models::NddlGeneratable* createBox();
-		static nddlgen::models::NddlGeneratable* createLidBox();
-		static nddlgen::models::NddlGeneratable* createObjectSlideContainer();
-		static nddlgen::models::NddlGeneratable* createObjectSlide();
+		static nddlgen::models::NddlGeneratablePtr createBox();
+		static nddlgen::models::NddlGeneratablePtr createLidBox();
+		static nddlgen::models::NddlGeneratablePtr createObjectSlideContainer();
+		static nddlgen::models::NddlGeneratablePtr createObjectSlide();
 
 };
 

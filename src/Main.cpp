@@ -17,6 +17,7 @@
 #include <cstdlib>
 #include <exception>
 #include <iostream>
+#include <time.h>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
@@ -47,7 +48,7 @@ std::string yellow(std::string text);
 std::string blue(std::string text);
 
 // Version of nddlgen-cli
-std::string _nddlgenCliVersion = "0.3.5";
+std::string _nddlgenCliVersion = "0.3.6";
 
 // Supported nddlgen-core version (major.minor)
 std::string _supportedNddlgenCoreVersion = "0.7";
@@ -112,15 +113,19 @@ int main(int argc, char* argv[])
 	// Print license header if verbose
 	printLicense();
 
+	// Begin time measure
+	clock_t time = clock();
+
 	// Create nddlgen controller configuration
-	nddlgen::ControllerConfig* cc = new nddlgen::ControllerConfig();
+	nddlgen::ControllerConfigPtr cc(new nddlgen::ControllerConfig());
+	nddlgen::controllers::ModelFactoryPtr modelFactory(new nddlgen::controllers::ModelFactory());
 
 	// Initialize controller config (setting adapter name and version, input files, output path)
 	cc->setAdapter("nddlgen-cli v" + _nddlgenCliVersion);
 	cc->setSdfInputFile(_inputSdfFile);
 	cc->setIsdInputFile(_inputIsdFile);
 	cc->setOutputFilesPath(_outputPath);
-	cc->setModelFactory(new nddlgen::controllers::ModelFactory());
+	cc->setModelFactory(modelFactory);
 
 	// Throw warning if installed nddlgen-core version differs to much from the supported version
 	if (!boost::starts_with(nddlgen::VERSION, _supportedNddlgenCoreVersion + "."))
@@ -234,6 +239,10 @@ int main(int argc, char* argv[])
 
 		printNewLine(green("[OK]"));
 
+		// Stop time measure
+		time = clock() - time;
+		std::string executionTime = boost::lexical_cast<std::string>((((float) time) / CLOCKS_PER_SEC) * 1000);
+
 		printNewLine();
 		printNewLine(green("NDDL files successfully generated."));
 		printNewLine();
@@ -241,9 +250,9 @@ int main(int argc, char* argv[])
 		printNewLine("Saved files in path \t\t\t\t" + yellow(cc->getOutputFilesPath()));
 		printNewLine("Domain models saved as \t\t\t\t" + yellow(cc->getOutputModelFileName()));
 		printNewLine("Domain initial state saved as \t\t\t" + yellow(cc->getOutputInitialStateFileName()));
+		printNewLine("Generating NDDL files took " + executionTime + "ms");
 
 		boost::checked_delete(c);
-		boost::checked_delete(cc);
 
 		return EXIT_SUCCESS;
 	}
@@ -264,7 +273,6 @@ int main(int argc, char* argv[])
 		}
 
 		boost::checked_delete(c);
-		boost::checked_delete(cc);
 
 		return EXIT_FAILURE;
 	}
