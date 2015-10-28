@@ -38,10 +38,4 @@ namespace nddlgen { namespace models
 
 	}
 
-
-	void ObjectSlideContainerModel::generateInitialState(std::ofstream& ofStream)
-	{
-
-	}
-
 }}
