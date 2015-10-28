@@ -75,13 +75,6 @@ namespace nddlgen { namespace models
 		this->addAction(closeAction);
 	}
 
-
-	void LidBoxModel::generateInitialState(std::ofstream& ofStream)
-	{
-
-	}
-
-
 	bool LidBoxModel::isOpened()
 	{
 		return this->_isOpened;

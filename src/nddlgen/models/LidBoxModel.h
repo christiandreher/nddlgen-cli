@@ -40,8 +40,6 @@ namespace nddlgen { namespace models
 
 			virtual void postInitProcessing();
 
-			virtual void generateInitialState(std::ofstream& ofStream);
-
 			bool isOpened();
 
 	};

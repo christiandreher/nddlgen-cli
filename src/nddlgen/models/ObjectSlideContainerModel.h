@@ -38,8 +38,6 @@ namespace nddlgen { namespace models
 			ObjectSlideContainerModel(int capacity);
 			virtual ~ObjectSlideContainerModel();
 
-			virtual void generateInitialState(std::ofstream& ofStream);
-
 			void setCapacity(int capacity);
 			int getCapacity();
 
