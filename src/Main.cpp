@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
 	if (!boost::starts_with(nddlgen::VERSION, _supportedNddlgenCoreVersion + "."))
 	{
 		printNewLine(yellow("Warning. This version of nddlgen-cli was intended for nddlgen-core v"
-				+ _supportedNddlgenCoreVersion + "x"));
+				+ _supportedNddlgenCoreVersion + ".x"));
 		printNewLine(yellow("If you experience problems, try one of the supported versions of nddlgen-core."));
 		printNewLine();
 	}
