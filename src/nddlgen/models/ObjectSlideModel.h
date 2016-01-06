@@ -22,19 +22,22 @@
 
 #include <nddlgen/models/NddlGeneratable.h>
 
-namespace nddlgen { namespace models
+namespace nddlgen
+{
+	namespace models
+	{
+		class ObjectSlideModel;
+	}
+}
+
+class nddlgen::models::ObjectSlideModel : public nddlgen::models::NddlGeneratable
 {
 
-	class ObjectSlideModel : public nddlgen::models::NddlGeneratable
-	{
+	public:
 
-		public:
+		ObjectSlideModel();
+		virtual ~ObjectSlideModel();
 
-			ObjectSlideModel();
-			virtual ~ObjectSlideModel();
-
-	};
-
-}}
+};
 
 #endif

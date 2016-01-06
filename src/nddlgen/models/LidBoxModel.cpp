@@ -16,68 +16,62 @@
 
 #include <nddlgen/models/LidBoxModel.h>
 
-namespace nddlgen { namespace models
+nddlgen::models::LidBoxModel::LidBoxModel()
+{
+	this->setClassName("LidBox");
+
+	this->_isOpened = false;
+}
+
+nddlgen::models::LidBoxModel::LidBoxModel(bool isOpened)
+{
+	this->setClassName("LidBox");
+
+	this->_isOpened = isOpened;
+}
+
+nddlgen::models::LidBoxModel::~LidBoxModel()
 {
 
-	LidBoxModel::LidBoxModel()
+}
+
+void nddlgen::models::LidBoxModel::postInitProcessing()
+{
+	std::string openedPredicate = "opened";
+	std::string closedPredicate = "closed";
+
+	nddlgen::utilities::ModelActionPtr openAction(new nddlgen::utilities::ModelAction());
+	nddlgen::utilities::ModelActionPtr closeAction(new nddlgen::utilities::ModelAction());
+
+	this->setClassName("LidBox");
+
+	openAction->setName("open" + this->getNamePref());
+	openAction->setDuration("1");
+	openAction->setMetByCondition(this->getNamePref(), closedPredicate);
+
+	if (this->isBlocked())
 	{
-		this->setClassName("LidBox");
-
-		this->_isOpened = false;
-	}
-
-	LidBoxModel::LidBoxModel(bool isOpened)
-	{
-		this->setClassName("LidBox");
-
-		this->_isOpened = isOpened;
-	}
-
-	LidBoxModel::~LidBoxModel()
-	{
-
-	}
-
-
-	void LidBoxModel::postInitProcessing()
-	{
-		std::string openedPredicate = "opened";
-		std::string closedPredicate = "closed";
-
-		nddlgen::utilities::ModelActionPtr openAction(new nddlgen::utilities::ModelAction());
-		nddlgen::utilities::ModelActionPtr closeAction(new nddlgen::utilities::ModelAction());
-
-		this->setClassName("LidBox");
-
-		openAction->setName("open" + this->getNamePref());
-		openAction->setDuration("1");
-		openAction->setMetByCondition(this->getNamePref(), closedPredicate);
-
-		if (this->isBlocked())
+		foreach (nddlgen::models::NddlGeneratablePtr generatableModel, this->_blockedBy)
 		{
-			foreach (nddlgen::models::NddlGeneratablePtr generatableModel, this->_blockedBy)
-			{
-				openAction->setContainedByCondition(generatableModel->getNamePref(), closedPredicate);
-			}
+			openAction->setContainedByCondition(generatableModel->getNamePref(), closedPredicate);
 		}
-
-		openAction->setMeetsEffect(this->getNamePref(), openedPredicate);
-
-		closeAction->setName("close" + this->getNamePref());
-		closeAction->setDuration("1");
-		closeAction->setMetByCondition(this->getNamePref(), openedPredicate);
-		closeAction->setMeetsEffect(this->getNamePref(), closedPredicate);
-
-		this->addPredicate(openedPredicate);
-		this->addPredicate(closedPredicate);
-
-		this->addAction(openAction);
-		this->addAction(closeAction);
 	}
 
-	bool LidBoxModel::isOpened()
-	{
-		return this->_isOpened;
-	}
+	openAction->setMeetsEffect(this->getNamePref(), openedPredicate);
 
-}}
+	closeAction->setName("close" + this->getNamePref());
+	closeAction->setDuration("1");
+	closeAction->setMetByCondition(this->getNamePref(), openedPredicate);
+	closeAction->setMeetsEffect(this->getNamePref(), closedPredicate);
+
+	this->addPredicate(openedPredicate);
+	this->addPredicate(closedPredicate);
+
+	this->addAction(openAction);
+	this->addAction(closeAction);
+}
+
+bool nddlgen::models::LidBoxModel::isOpened()
+{
+	return this->_isOpened;
+}

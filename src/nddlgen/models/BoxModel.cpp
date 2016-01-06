@@ -16,17 +16,12 @@
 
 #include <nddlgen/models/BoxModel.h>
 
-namespace nddlgen { namespace models
+nddlgen::models::BoxModel::BoxModel()
+{
+	this->setClassName("Box");
+}
+
+nddlgen::models::BoxModel::~BoxModel()
 {
 
-	BoxModel::BoxModel()
-	{
-		this->setClassName("Box");
-	}
-
-	BoxModel::~BoxModel()
-	{
-
-	}
-
-}}
+}

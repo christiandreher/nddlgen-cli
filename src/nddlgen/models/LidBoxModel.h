@@ -22,28 +22,31 @@
 
 #include <nddlgen/models/BoxModel.h>
 
-namespace nddlgen { namespace models
+namespace nddlgen
+{
+	namespace models
+	{
+		class LidBoxModel;
+	}
+}
+
+class nddlgen::models::LidBoxModel : public nddlgen::models::BoxModel
 {
 
-	class LidBoxModel : public nddlgen::models::BoxModel
-	{
+	private:
 
-		private:
+		bool _isOpened;
 
-			bool _isOpened;
+	public:
 
-		public:
+		LidBoxModel();
+		LidBoxModel(bool isOpened);
+		virtual ~LidBoxModel();
 
-			LidBoxModel();
-			LidBoxModel(bool isOpened);
-			virtual ~LidBoxModel();
+		virtual void postInitProcessing();
 
-			virtual void postInitProcessing();
+		bool isOpened();
 
-			bool isOpened();
-
-	};
-
-}}
+};
 
 #endif

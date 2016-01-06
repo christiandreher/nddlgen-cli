@@ -22,19 +22,22 @@
 
 #include <nddlgen/models/NddlGeneratable.h>
 
-namespace nddlgen { namespace models
+namespace nddlgen
+{
+	namespace models
+	{
+		class BoxModel;
+	}
+}
+
+class nddlgen::models::BoxModel : public nddlgen::models::NddlGeneratable
 {
 
-	class BoxModel : public nddlgen::models::NddlGeneratable
-	{
+	public:
 
-		public:
+		BoxModel();
+		virtual ~BoxModel();
 
-			BoxModel();
-			virtual ~BoxModel();
-
-	};
-
-}}
+};
 
 #endif

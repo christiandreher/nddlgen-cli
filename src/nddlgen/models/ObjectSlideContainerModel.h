@@ -22,27 +22,30 @@
 
 #include <nddlgen/models/NddlGeneratable.h>
 
-namespace nddlgen { namespace models
+namespace nddlgen
+{
+	namespace models
+	{
+		class ObjectSlideContainerModel;
+	}
+}
+
+class nddlgen::models::ObjectSlideContainerModel : public nddlgen::models::NddlGeneratable
 {
 
-	class ObjectSlideContainerModel : public nddlgen::models::NddlGeneratable
-	{
+	private:
 
-		private:
+		int _capacity;
 
-			int _capacity;
+	public:
 
-		public:
+		ObjectSlideContainerModel();
+		ObjectSlideContainerModel(int capacity);
+		virtual ~ObjectSlideContainerModel();
 
-			ObjectSlideContainerModel();
-			ObjectSlideContainerModel(int capacity);
-			virtual ~ObjectSlideContainerModel();
+		void setCapacity(int capacity);
+		int getCapacity();
 
-			void setCapacity(int capacity);
-			int getCapacity();
-
-	};
-
-}}
+};
 
 #endif

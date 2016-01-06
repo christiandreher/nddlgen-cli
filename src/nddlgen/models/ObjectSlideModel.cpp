@@ -16,17 +16,12 @@
 
 #include <nddlgen/models/ObjectSlideModel.h>
 
-namespace nddlgen { namespace models
+nddlgen::models::ObjectSlideModel::ObjectSlideModel()
+{
+	this->setClassName("ObjectSlide");
+}
+
+nddlgen::models::ObjectSlideModel::~ObjectSlideModel()
 {
 
-	ObjectSlideModel::ObjectSlideModel()
-	{
-		this->setClassName("ObjectSlide");
-	}
-
-	ObjectSlideModel::~ObjectSlideModel()
-	{
-
-	}
-
-}}
+}

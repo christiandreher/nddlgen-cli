@@ -16,26 +16,31 @@
 
 #include <nddlgen/models/ObjectSlideContainerModel.h>
 
-namespace nddlgen { namespace models
+nddlgen::models::ObjectSlideContainerModel::ObjectSlideContainerModel()
+{
+	this->setClassName("ObjectSlideContainer");
+
+	this->_capacity = 12;
+}
+
+nddlgen::models::ObjectSlideContainerModel::ObjectSlideContainerModel(int capacity)
+{
+	this->setClassName("ObjectSlideContainer");
+
+	this->_capacity = capacity;
+}
+
+nddlgen::models::ObjectSlideContainerModel::~ObjectSlideContainerModel()
 {
 
-	ObjectSlideContainerModel::ObjectSlideContainerModel()
-	{
-		this->setClassName("ObjectSlideContainer");
+}
 
-		this->_capacity = 36;
-	}
+void nddlgen::models::ObjectSlideContainerModel::setCapacity(int capacity)
+{
+	this->_capacity = capacity;
+}
 
-	ObjectSlideContainerModel::ObjectSlideContainerModel(int capacity)
-	{
-		this->setClassName("ObjectSlideContainer");
-
-		this->_capacity = capacity;
-	}
-
-	ObjectSlideContainerModel::~ObjectSlideContainerModel()
-	{
-
-	}
-
-}}
+int nddlgen::models::ObjectSlideContainerModel::getCapacity()
+{
+	return this->_capacity;
+}
