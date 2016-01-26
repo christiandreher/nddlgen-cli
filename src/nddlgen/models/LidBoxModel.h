@@ -35,17 +35,21 @@ class nddlgen::models::LidBoxModel : public nddlgen::models::BoxModel
 
 	private:
 
-		bool _isOpened;
+		std::string _openedPredicate;
+		std::string _closingPredicate;
+		std::string _closedPredicate;
+		std::string _openingPredicate;
+
+		nddlgen::utilities::ModelActionPtr getOpenAction();
+		nddlgen::utilities::ModelActionPtr getCloseAction();
 
 	public:
 
 		LidBoxModel();
-		LidBoxModel(bool isOpened);
 		virtual ~LidBoxModel();
 
-		virtual void postInitProcessing();
-
-		bool isOpened();
+		virtual void initPredicates();
+		virtual void initActions();
 
 };
 

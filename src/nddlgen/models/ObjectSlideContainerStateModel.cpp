@@ -14,35 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef NDDLGEN_MODELS_OBJECTSLIDECONTAINERMODEL_H_
-#define NDDLGEN_MODELS_OBJECTSLIDECONTAINERMODEL_H_
-
-#include <iostream>
-#include <fstream>
-
 #include <nddlgen/models/ObjectSlideContainerStateModel.h>
-#include <nddlgen/models/NddlGeneratable.h>
-#include <nddlgen/models/ProcessModel.h>
-#include <nddlgen/utilities/WriteStream.hpp>
 
-namespace nddlgen
+nddlgen::models::ObjectSlideContainerStateModel::ObjectSlideContainerStateModel()
 {
-	namespace models
-	{
-		class ObjectSlideContainerModel;
-	}
+	this->setClassName("ObjectSlideContainerState");
 }
 
-class nddlgen::models::ObjectSlideContainerModel : public nddlgen::models::NddlGeneratable
+nddlgen::models::ObjectSlideContainerStateModel::~ObjectSlideContainerStateModel()
 {
 
-	public:
+}
 
-		ObjectSlideContainerModel();
-		virtual ~ObjectSlideContainerModel();
-
-		virtual void initSubObjects();
-
-};
-
-#endif
+void nddlgen::models::ObjectSlideContainerStateModel::initPredicates()
+{
+	this->addPredicate("full");
+	this->addPredicate("emptying");
+	this->addPredicate("empty");
+	this->addPredicate("filling");
+}

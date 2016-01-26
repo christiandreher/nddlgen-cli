@@ -51,7 +51,7 @@ std::string blue(std::string text);
 std::string _nddlgenCliVersion = "0.5.0";
 
 // Supported nddlgen-core version (major.minor)
-std::string _supportedNddlgenCoreVersion = "0.11";
+std::string _supportedNddlgenCoreVersion = "1.0";
 
 // CLI arguments
 bool _help = false;

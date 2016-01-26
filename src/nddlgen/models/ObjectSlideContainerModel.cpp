@@ -19,15 +19,6 @@
 nddlgen::models::ObjectSlideContainerModel::ObjectSlideContainerModel()
 {
 	this->setClassName("ObjectSlideContainer");
-
-	this->_capacity = 12;
-}
-
-nddlgen::models::ObjectSlideContainerModel::ObjectSlideContainerModel(int capacity)
-{
-	this->setClassName("ObjectSlideContainer");
-
-	this->_capacity = capacity;
 }
 
 nddlgen::models::ObjectSlideContainerModel::~ObjectSlideContainerModel()
@@ -35,12 +26,13 @@ nddlgen::models::ObjectSlideContainerModel::~ObjectSlideContainerModel()
 
 }
 
-void nddlgen::models::ObjectSlideContainerModel::setCapacity(int capacity)
+void nddlgen::models::ObjectSlideContainerModel::initSubObjects()
 {
-	this->_capacity = capacity;
-}
+	nddlgen::models::ObjectSlideContainerStateModelPtr oscs(new nddlgen::models::ObjectSlideContainerStateModel());
+	nddlgen::models::ProcessModelPtr process1(new nddlgen::models::ProcessModel());
+	nddlgen::models::ProcessModelPtr process2(new nddlgen::models::ProcessModel());
 
-int nddlgen::models::ObjectSlideContainerModel::getCapacity()
-{
-	return this->_capacity;
+	this->addSubObject(oscs);
+	this->addSubObject(process1);
+	this->addSubObject(process2);
 }

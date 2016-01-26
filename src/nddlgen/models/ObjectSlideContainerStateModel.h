@@ -14,34 +14,30 @@
  * limitations under the License.
  */
 
-#ifndef NDDLGEN_MODELS_OBJECTSLIDECONTAINERMODEL_H_
-#define NDDLGEN_MODELS_OBJECTSLIDECONTAINERMODEL_H_
+#ifndef NDDLGEN_MODELS_OBJECTSLIDECONTAINERSTATEMODEL_H_
+#define NDDLGEN_MODELS_OBJECTSLIDECONTAINERSTATEMODEL_H_
 
-#include <iostream>
-#include <fstream>
-
-#include <nddlgen/models/ObjectSlideContainerStateModel.h>
+#include <boost/shared_ptr.hpp>
 #include <nddlgen/models/NddlGeneratable.h>
-#include <nddlgen/models/ProcessModel.h>
-#include <nddlgen/utilities/WriteStream.hpp>
 
 namespace nddlgen
 {
 	namespace models
 	{
-		class ObjectSlideContainerModel;
+		class ObjectSlideContainerStateModel;
+		typedef boost::shared_ptr<nddlgen::models::ObjectSlideContainerStateModel> ObjectSlideContainerStateModelPtr;
 	}
 }
 
-class nddlgen::models::ObjectSlideContainerModel : public nddlgen::models::NddlGeneratable
+class nddlgen::models::ObjectSlideContainerStateModel : public nddlgen::models::NddlGeneratable
 {
 
 	public:
 
-		ObjectSlideContainerModel();
-		virtual ~ObjectSlideContainerModel();
+		ObjectSlideContainerStateModel();
+		virtual ~ObjectSlideContainerStateModel();
 
-		virtual void initSubObjects();
+		virtual void initPredicates();
 
 };
 

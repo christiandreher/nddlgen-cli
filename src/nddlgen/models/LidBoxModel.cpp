@@ -20,14 +20,10 @@ nddlgen::models::LidBoxModel::LidBoxModel()
 {
 	this->setClassName("LidBox");
 
-	this->_isOpened = false;
-}
-
-nddlgen::models::LidBoxModel::LidBoxModel(bool isOpened)
-{
-	this->setClassName("LidBox");
-
-	this->_isOpened = isOpened;
+	this->_openedPredicate = "opened";
+	this->_closingPredicate = "closing";
+	this->_closedPredicate = "closed";
+	this->_openingPredicate = "opening";
 }
 
 nddlgen::models::LidBoxModel::~LidBoxModel()
@@ -35,43 +31,51 @@ nddlgen::models::LidBoxModel::~LidBoxModel()
 
 }
 
-void nddlgen::models::LidBoxModel::postInitProcessing()
+void nddlgen::models::LidBoxModel::initPredicates()
 {
-	std::string openedPredicate = "opened";
-	std::string closedPredicate = "closed";
+	this->addPredicate(this->_openedPredicate);
+	this->addPredicate(this->_closingPredicate);
+	this->addPredicate(this->_closedPredicate);
+	this->addPredicate(this->_openingPredicate);
+}
 
+void nddlgen::models::LidBoxModel::initActions()
+{
+	this->addAction(this->getOpenAction());
+	this->addAction(this->getCloseAction());
+}
+
+nddlgen::utilities::ModelActionPtr nddlgen::models::LidBoxModel::getOpenAction()
+{
 	nddlgen::utilities::ModelActionPtr openAction(new nddlgen::utilities::ModelAction());
-	nddlgen::utilities::ModelActionPtr closeAction(new nddlgen::utilities::ModelAction());
-
-	this->setClassName("LidBox");
 
 	openAction->setName("open" + this->getNamePref());
 	openAction->setDuration("1");
-	openAction->setMetByCondition(this->getNamePref(), closedPredicate);
+	openAction->addMetByCondition(this->getAccessor(), this->_closedPredicate);
 
 	if (this->isBlocked())
 	{
 		foreach (nddlgen::models::NddlGeneratablePtr generatableModel, this->_blockedBy)
 		{
-			openAction->setContainedByCondition(generatableModel->getNamePref(), closedPredicate);
+			openAction->addContainedByCondition(generatableModel->getAccessor(), this->_closedPredicate);
 		}
 	}
 
-	openAction->setMeetsEffect(this->getNamePref(), openedPredicate);
+	openAction->addEqualsEffect(this->getAccessor(), this->_openingPredicate);
+	openAction->addMeetsEffect(this->getAccessor(), this->_openedPredicate);
+
+	return openAction;
+}
+
+nddlgen::utilities::ModelActionPtr nddlgen::models::LidBoxModel::getCloseAction()
+{
+	nddlgen::utilities::ModelActionPtr closeAction(new nddlgen::utilities::ModelAction());
 
 	closeAction->setName("close" + this->getNamePref());
 	closeAction->setDuration("1");
-	closeAction->setMetByCondition(this->getNamePref(), openedPredicate);
-	closeAction->setMeetsEffect(this->getNamePref(), closedPredicate);
+	closeAction->addMetByCondition(this->getAccessor(), this->_openedPredicate);
+	closeAction->addEqualsEffect(this->getAccessor(), this->_closingPredicate);
+	closeAction->addMeetsEffect(this->getAccessor(), this->_closedPredicate);
 
-	this->addPredicate(openedPredicate);
-	this->addPredicate(closedPredicate);
-
-	this->addAction(openAction);
-	this->addAction(closeAction);
-}
-
-bool nddlgen::models::LidBoxModel::isOpened()
-{
-	return this->_isOpened;
+	return closeAction;
 }
