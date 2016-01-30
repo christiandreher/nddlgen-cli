@@ -14,35 +14,46 @@
  * limitations under the License.
  */
 
-#ifndef NDDLGEN_MODELS_OBJECTSLIDECONTAINERMODEL_H_
-#define NDDLGEN_MODELS_OBJECTSLIDECONTAINERMODEL_H_
+#ifndef NDDLGEN_MODELS_ARMMODEL_H_
+#define NDDLGEN_MODELS_ARMMODEL_H_
 
 #include <iostream>
 #include <fstream>
 
+#include <boost/shared_ptr.hpp>
+
+#include <nddlgen/models/DefaultArmModel.h>
+#include <nddlgen/models/LidBoxModel.h>
 #include <nddlgen/models/ObjectSlideContainerStateModel.h>
-#include <nddlgen/models/NddlGeneratable.h>
 #include <nddlgen/models/ProcessModel.h>
-#include <nddlgen/utilities/ModelAction.h>
-#include <nddlgen/utilities/WriteStream.hpp>
 
 namespace nddlgen
 {
 	namespace models
 	{
-		class ObjectSlideContainerModel;
+		class ArmModel;
+		typedef boost::shared_ptr<nddlgen::models::ArmModel> ArmModelPtr;
 	}
 }
 
-class nddlgen::models::ObjectSlideContainerModel : public nddlgen::models::NddlGeneratable
+class nddlgen::models::ArmModel : public nddlgen::models::DefaultArmModel
 {
+
+	private:
+
+		nddlgen::utilities::ModelActionPtr preparationProcess1Action();
+
+		nddlgen::utilities::ModelActionPtr preparationProcess2Action();
+
+		nddlgen::utilities::ModelActionPtr goalAchievedAction();
 
 	public:
 
-		ObjectSlideContainerModel();
-		virtual ~ObjectSlideContainerModel();
+		ArmModel();
 
-		virtual void initSubObjects();
+		virtual ~ArmModel();
+
+		virtual void initActions();
 
 };
 

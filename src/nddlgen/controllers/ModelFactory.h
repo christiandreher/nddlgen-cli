@@ -19,12 +19,17 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <nddlgen/models/ArmModel.h>
 #include <nddlgen/models/BoxModel.h>
+#include <nddlgen/models/DomainDescriptionModel.h>
 #include <nddlgen/models/LidBoxModel.h>
 #include <nddlgen/models/ObjectSlideContainerModel.h>
 #include <nddlgen/models/ObjectSlideModel.h>
+#include <nddlgen/models/ObstacleModel.h>
 #include <nddlgen/models/NddlGeneratable.h>
 #include <nddlgen/controllers/NddlGeneratableFactory.h>
+#include <nddlgen/models/DefaultArmModel.h>
+#include <nddlgen/utilities/ModelAction.h>
 
 namespace nddlgen
 {
@@ -45,10 +50,12 @@ class nddlgen::controllers::ModelFactory : public nddlgen::controllers::NddlGene
 
 		virtual void registerNddlGeneratables();
 
+		static nddlgen::models::NddlGeneratablePtr createArm();
 		static nddlgen::models::NddlGeneratablePtr createBox();
 		static nddlgen::models::NddlGeneratablePtr createLidBox();
 		static nddlgen::models::NddlGeneratablePtr createObjectSlideContainer();
 		static nddlgen::models::NddlGeneratablePtr createObjectSlide();
+		static nddlgen::models::NddlGeneratablePtr createObstacle();
 
 };
 

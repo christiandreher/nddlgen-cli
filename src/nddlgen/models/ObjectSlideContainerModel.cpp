@@ -32,6 +32,10 @@ void nddlgen::models::ObjectSlideContainerModel::initSubObjects()
 	nddlgen::models::ProcessModelPtr process1(new nddlgen::models::ProcessModel());
 	nddlgen::models::ProcessModelPtr process2(new nddlgen::models::ProcessModel());
 
+	oscs->setName("oscs");
+	process1->setName("preparation_process_1");
+	process2->setName("preparation_process_2");
+
 	this->addSubObject(oscs);
 	this->addSubObject(process1);
 	this->addSubObject(process2);

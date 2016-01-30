@@ -37,6 +37,8 @@ void nddlgen::models::LidBoxModel::initPredicates()
 	this->addPredicate(this->_closingPredicate);
 	this->addPredicate(this->_closedPredicate);
 	this->addPredicate(this->_openingPredicate);
+
+	this->setInitialPredicate(this->_closedPredicate);
 }
 
 void nddlgen::models::LidBoxModel::initActions()
@@ -57,7 +59,13 @@ nddlgen::utilities::ModelActionPtr nddlgen::models::LidBoxModel::getOpenAction()
 	{
 		foreach (nddlgen::models::NddlGeneratablePtr generatableModel, this->_blockedBy)
 		{
-			openAction->addContainedByCondition(generatableModel->getAccessor(), this->_closedPredicate);
+			if (generatableModel->getClassName() == "Obstacle")
+			{
+				nddlgen::models::ObstacleModelPtr obstacle = boost::dynamic_pointer_cast<nddlgen::models::ObstacleModel>(
+						generatableModel);
+
+				openAction->addContainedByCondition(obstacle->getAccessor(), obstacle->getClearedPredicate());
+			}
 		}
 	}
 
@@ -78,4 +86,24 @@ nddlgen::utilities::ModelActionPtr nddlgen::models::LidBoxModel::getCloseAction(
 	closeAction->addMeetsEffect(this->getAccessor(), this->_closedPredicate);
 
 	return closeAction;
+}
+
+std::string nddlgen::models::LidBoxModel::getOpenedPredicate()
+{
+	return this->_openedPredicate;
+}
+
+std::string nddlgen::models::LidBoxModel::getClosingPredicate()
+{
+	return this->_closingPredicate;
+}
+
+std::string nddlgen::models::LidBoxModel::getClosedPredicate()
+{
+	return this->_closedPredicate;
+}
+
+std::string nddlgen::models::LidBoxModel::getOpeningPredicate()
+{
+	return this->_openingPredicate;
 }

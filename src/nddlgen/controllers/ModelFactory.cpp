@@ -29,12 +29,19 @@ nddlgen::controllers::ModelFactory::~ModelFactory()
 void nddlgen::controllers::ModelFactory::registerNddlGeneratables()
 {
 	// Order of registration is arbitrary. Model names don't have to be prefix free
-	this->registerNddlGeneratable("Arm", &nddlgen::controllers::NddlGeneratableFactory::createArm);
-	this->registerNddlGeneratable("Workspace", &nddlgen::controllers::NddlGeneratableFactory::createWorkspace);
+	this->registerNddlGeneratable("Arm", &nddlgen::controllers::ModelFactory::createArm);
+	this->registerNddlGeneratable("Workspace", &nddlgen::controllers::NddlGeneratableFactory::createDefaultWorkspace);
 	this->registerNddlGeneratable("Box", &nddlgen::controllers::ModelFactory::createBox);
 	this->registerNddlGeneratable("LidBox", &nddlgen::controllers::ModelFactory::createLidBox);
 	this->registerNddlGeneratable("ObjectSlide", &nddlgen::controllers::ModelFactory::createObjectSlide);
 	this->registerNddlGeneratable("ObjectSlideContainer", &nddlgen::controllers::ModelFactory::createObjectSlideContainer);
+	this->registerNddlGeneratable("Obstacle", &nddlgen::controllers::ModelFactory::createObstacle);
+}
+
+nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createArm()
+{
+	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::ArmModel());
+	return model;
 }
 
 nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createBox()
@@ -58,5 +65,11 @@ nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createOb
 nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createObjectSlide()
 {
 	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::ObjectSlideModel());
+	return model;
+}
+
+nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createObstacle()
+{
+	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::ObstacleModel());
 	return model;
 }

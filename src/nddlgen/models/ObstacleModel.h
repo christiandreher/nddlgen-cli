@@ -14,51 +14,45 @@
  * limitations under the License.
  */
 
-#ifndef NDDLGEN_MODELS_LIDBOXMODEL_H_
-#define NDDLGEN_MODELS_LIDBOXMODEL_H_
+#ifndef NDDLGEN_MODELS_OBSTACLEMODEL_H_
+#define NDDLGEN_MODELS_OBSTACLEMODEL_H_
 
 #include <iostream>
 #include <fstream>
 
 #include <boost/shared_ptr.hpp>
 
-#include <nddlgen/models/BoxModel.h>
-#include <nddlgen/models/ObstacleModel.h>
+#include <nddlgen/models/NddlGeneratable.h>
 
 namespace nddlgen
 {
 	namespace models
 	{
-		class LidBoxModel;
-		typedef boost::shared_ptr<nddlgen::models::LidBoxModel> LidBoxModelPtr;
+		class ObstacleModel;
+		typedef boost::shared_ptr<nddlgen::models::ObstacleModel> ObstacleModelPtr;
 	}
 }
 
-class nddlgen::models::LidBoxModel : public nddlgen::models::BoxModel
+class nddlgen::models::ObstacleModel : public nddlgen::models::NddlGeneratable
 {
 
 	private:
 
-		std::string _openedPredicate;
-		std::string _closingPredicate;
-		std::string _closedPredicate;
-		std::string _openingPredicate;
-
-		nddlgen::utilities::ModelActionPtr getOpenAction();
-		nddlgen::utilities::ModelActionPtr getCloseAction();
+		std::string _blockingPredicate;
+		std::string _beingClearedPredicate;
+		std::string _clearedPredicate;
 
 	public:
 
-		LidBoxModel();
-		virtual ~LidBoxModel();
+		ObstacleModel();
+		virtual ~ObstacleModel();
 
 		virtual void initPredicates();
 		virtual void initActions();
 
-		std::string getOpenedPredicate();
-		std::string getClosingPredicate();
-		std::string getClosedPredicate();
-		std::string getOpeningPredicate();
+		std::string getBlockingPredicate();
+		std::string getBeingClearedPredicate();
+		std::string getClearedPredicate();
 
 };
 

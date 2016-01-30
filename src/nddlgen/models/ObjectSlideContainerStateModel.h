@@ -18,6 +18,7 @@
 #define NDDLGEN_MODELS_OBJECTSLIDECONTAINERSTATEMODEL_H_
 
 #include <boost/shared_ptr.hpp>
+
 #include <nddlgen/models/NddlGeneratable.h>
 
 namespace nddlgen
@@ -32,12 +33,31 @@ namespace nddlgen
 class nddlgen::models::ObjectSlideContainerStateModel : public nddlgen::models::NddlGeneratable
 {
 
+	private:
+
+		std::string _fullPredicate;
+		std::string _emptyingPredicate;
+		std::string _emptyPredicate;
+		std::string _fillingPredicate;
+
+		nddlgen::utilities::ModelActionPtr getFillObjectSlideContainerAction();
+
+		nddlgen::utilities::ModelActionPtr getEmptyObjectSlideContainerAction();
+
 	public:
 
 		ObjectSlideContainerStateModel();
+
 		virtual ~ObjectSlideContainerStateModel();
 
 		virtual void initPredicates();
+
+		virtual void initActions();
+
+		std::string getFullPredicate();
+		std::string getEmptyingPredicate();
+		std::string getEmptyPredicate();
+		std::string getFillingPredicate();
 
 };
 

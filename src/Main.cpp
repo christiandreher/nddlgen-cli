@@ -48,10 +48,10 @@ std::string yellow(std::string text);
 std::string blue(std::string text);
 
 // Version of nddlgen-cli
-std::string _nddlgenCliVersion = "0.6.0";
+std::string _nddlgenCliVersion = "1.0.0";
 
 // Supported nddlgen-core version (major.minor)
-std::string _supportedNddlgenCoreVersion = "1.0";
+std::string _supportedNddlgenCoreVersion = "1.1";
 
 // CLI arguments
 bool _help = false;
