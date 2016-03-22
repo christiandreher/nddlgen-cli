@@ -14,62 +14,62 @@
  * limitations under the License.
  */
 
-#include <nddlgen/controllers/ModelFactory.h>
+#include <nddlgen/controllers/ObjectFactory.h>
 
-nddlgen::controllers::ModelFactory::ModelFactory()
+nddlgen::controllers::ObjectFactory::ObjectFactory()
 {
 
 }
 
-nddlgen::controllers::ModelFactory::~ModelFactory()
+nddlgen::controllers::ObjectFactory::~ObjectFactory()
 {
 
 }
 
-void nddlgen::controllers::ModelFactory::registerNddlGeneratables()
+void nddlgen::controllers::ObjectFactory::registerObjectModels()
 {
 	// Order of registration is arbitrary. Model names don't have to be prefix free
-	this->registerNddlGeneratable("Arm", &nddlgen::controllers::ModelFactory::createArm);
-	this->registerNddlGeneratable("Workspace", &nddlgen::controllers::NddlGeneratableFactory::createDefaultWorkspace);
-	this->registerNddlGeneratable("Box", &nddlgen::controllers::ModelFactory::createBox);
-	this->registerNddlGeneratable("LidBox", &nddlgen::controllers::ModelFactory::createLidBox);
-	this->registerNddlGeneratable("ObjectSlide", &nddlgen::controllers::ModelFactory::createObjectSlide);
-	this->registerNddlGeneratable("ObjectSlideContainer", &nddlgen::controllers::ModelFactory::createObjectSlideContainer);
-	this->registerNddlGeneratable("Obstacle", &nddlgen::controllers::ModelFactory::createObstacle);
+	this->registerObjectModel("Arm", &nddlgen::controllers::ObjectFactory::createArm);
+	this->registerObjectModel("Workspace", &nddlgen::controllers::AbstractObjectFactory::createDefaultWorkspace);
+	this->registerObjectModel("Box", &nddlgen::controllers::ObjectFactory::createBox);
+	this->registerObjectModel("LidBox", &nddlgen::controllers::ObjectFactory::createLidBox);
+	this->registerObjectModel("ObjectSlide", &nddlgen::controllers::ObjectFactory::createObjectSlide);
+	this->registerObjectModel("ObjectSlideContainer", &nddlgen::controllers::ObjectFactory::createObjectSlideContainer);
+	this->registerObjectModel("Obstacle", &nddlgen::controllers::ObjectFactory::createObstacle);
 }
 
-nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createArm()
+nddlgen::models::AbstractObjectModelPtr nddlgen::controllers::ObjectFactory::createArm()
 {
-	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::ArmModel());
+	nddlgen::models::AbstractObjectModelPtr model(new nddlgen::models::ArmModel());
 	return model;
 }
 
-nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createBox()
+nddlgen::models::AbstractObjectModelPtr nddlgen::controllers::ObjectFactory::createBox()
 {
-	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::BoxModel());
+	nddlgen::models::AbstractObjectModelPtr model(new nddlgen::models::BoxModel());
 	return model;
 }
 
-nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createLidBox()
+nddlgen::models::AbstractObjectModelPtr nddlgen::controllers::ObjectFactory::createLidBox()
 {
-	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::LidBoxModel());
+	nddlgen::models::AbstractObjectModelPtr model(new nddlgen::models::LidBoxModel());
 	return model;
 }
 
-nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createObjectSlideContainer()
+nddlgen::models::AbstractObjectModelPtr nddlgen::controllers::ObjectFactory::createObjectSlideContainer()
 {
-	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::ObjectSlideContainerModel());
+	nddlgen::models::AbstractObjectModelPtr model(new nddlgen::models::ObjectSlideContainerModel());
 	return model;
 }
 
-nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createObjectSlide()
+nddlgen::models::AbstractObjectModelPtr nddlgen::controllers::ObjectFactory::createObjectSlide()
 {
-	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::ObjectSlideModel());
+	nddlgen::models::AbstractObjectModelPtr model(new nddlgen::models::ObjectSlideModel());
 	return model;
 }
 
-nddlgen::models::NddlGeneratablePtr nddlgen::controllers::ModelFactory::createObstacle()
+nddlgen::models::AbstractObjectModelPtr nddlgen::controllers::ObjectFactory::createObstacle()
 {
-	nddlgen::models::NddlGeneratablePtr model(new nddlgen::models::ObstacleModel());
+	nddlgen::models::AbstractObjectModelPtr model(new nddlgen::models::ObstacleModel());
 	return model;
 }

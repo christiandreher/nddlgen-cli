@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef NDDLGEN_CONTROLLERS_MODELFACTORY_H_
-#define NDDLGEN_CONTROLLERS_MODELFACTORY_H_
+#ifndef NDDLGEN_CONTROLLERS_OBJECTFACTORY_H_
+#define NDDLGEN_CONTROLLERS_OBJECTFACTORY_H_
 
 #include <boost/shared_ptr.hpp>
 
@@ -26,36 +26,36 @@
 #include <nddlgen/models/ObjectSlideContainerModel.h>
 #include <nddlgen/models/ObjectSlideModel.h>
 #include <nddlgen/models/ObstacleModel.h>
-#include <nddlgen/models/NddlGeneratable.h>
-#include <nddlgen/controllers/NddlGeneratableFactory.h>
+#include <nddlgen/controllers/AbstractObjectFactory.h>
+#include <nddlgen/models/AbstractObjectModel.h>
 #include <nddlgen/models/DefaultArmModel.h>
-#include <nddlgen/utilities/ModelAction.h>
+#include <nddlgen/models/ActionModel.h>
 
 namespace nddlgen
 {
 	namespace controllers
 	{
-		class ModelFactory;
-		typedef boost::shared_ptr<nddlgen::controllers::ModelFactory> ModelFactoryPtr;
+		class ObjectFactory;
+		typedef boost::shared_ptr<nddlgen::controllers::ObjectFactory> ObjectFactoryPtr;
 	}
 }
 
-class nddlgen::controllers::ModelFactory : public nddlgen::controllers::NddlGeneratableFactory
+class nddlgen::controllers::ObjectFactory : public nddlgen::controllers::AbstractObjectFactory
 {
 
 	public:
 
-		ModelFactory();
-		virtual ~ModelFactory();
+		ObjectFactory();
+		virtual ~ObjectFactory();
 
-		virtual void registerNddlGeneratables();
+		virtual void registerObjectModels();
 
-		static nddlgen::models::NddlGeneratablePtr createArm();
-		static nddlgen::models::NddlGeneratablePtr createBox();
-		static nddlgen::models::NddlGeneratablePtr createLidBox();
-		static nddlgen::models::NddlGeneratablePtr createObjectSlideContainer();
-		static nddlgen::models::NddlGeneratablePtr createObjectSlide();
-		static nddlgen::models::NddlGeneratablePtr createObstacle();
+		static nddlgen::models::AbstractObjectModelPtr createArm();
+		static nddlgen::models::AbstractObjectModelPtr createBox();
+		static nddlgen::models::AbstractObjectModelPtr createLidBox();
+		static nddlgen::models::AbstractObjectModelPtr createObjectSlideContainer();
+		static nddlgen::models::AbstractObjectModelPtr createObjectSlide();
+		static nddlgen::models::AbstractObjectModelPtr createObstacle();
 
 };
 
