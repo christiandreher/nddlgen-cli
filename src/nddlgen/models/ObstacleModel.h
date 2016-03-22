@@ -22,7 +22,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <nddlgen/models/NddlGeneratable.h>
+#include <nddlgen/models/AbstractObjectModel.h>
 
 namespace nddlgen
 {
@@ -33,7 +33,7 @@ namespace nddlgen
 	}
 }
 
-class nddlgen::models::ObstacleModel : public nddlgen::models::NddlGeneratable
+class nddlgen::models::ObstacleModel : public nddlgen::models::AbstractObjectModel
 {
 
 	private:

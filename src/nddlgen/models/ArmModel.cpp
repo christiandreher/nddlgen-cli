@@ -33,9 +33,9 @@ void nddlgen::models::ArmModel::initActions()
 	this->addAction(this->goalAchievedAction());
 }
 
-nddlgen::utilities::ModelActionPtr nddlgen::models::ArmModel::preparationProcess1Action()
+nddlgen::models::ActionModelPtr nddlgen::models::ArmModel::preparationProcess1Action()
 {
-	nddlgen::utilities::ModelActionPtr action(new nddlgen::utilities::ModelAction());
+	nddlgen::models::ActionModelPtr action(new nddlgen::models::ActionModel());
 
 	nddlgen::models::LidBoxModelPtr lidbox1 = boost::dynamic_pointer_cast<nddlgen::models::LidBoxModel>(
 			this->getSubObjectByName("unit_lidbox_1", true));
@@ -65,9 +65,9 @@ nddlgen::utilities::ModelActionPtr nddlgen::models::ArmModel::preparationProcess
 	return action;
 }
 
-nddlgen::utilities::ModelActionPtr nddlgen::models::ArmModel::preparationProcess2Action()
+nddlgen::models::ActionModelPtr nddlgen::models::ArmModel::preparationProcess2Action()
 {
-	nddlgen::utilities::ModelActionPtr action(new nddlgen::utilities::ModelAction());
+	nddlgen::models::ActionModelPtr action(new nddlgen::models::ActionModel());
 
 	nddlgen::models::LidBoxModelPtr lidbox1 = boost::dynamic_pointer_cast<nddlgen::models::LidBoxModel>(
 			this->getSubObjectByName("unit_lidbox_1", true));
@@ -97,9 +97,9 @@ nddlgen::utilities::ModelActionPtr nddlgen::models::ArmModel::preparationProcess
 	return action;
 }
 
-nddlgen::utilities::ModelActionPtr nddlgen::models::ArmModel::goalAchievedAction()
+nddlgen::models::ActionModelPtr nddlgen::models::ArmModel::goalAchievedAction()
 {
-	nddlgen::utilities::ModelActionPtr action(new nddlgen::utilities::ModelAction());
+	nddlgen::models::ActionModelPtr action(new nddlgen::models::ActionModel());
 
 	nddlgen::models::ProcessModelPtr armProcess = boost::dynamic_pointer_cast<nddlgen::models::ProcessModel>(
 			this->getSubObjectByName("armprocess"));

@@ -47,9 +47,9 @@ void nddlgen::models::ObjectSlideContainerStateModel::initActions()
 	this->addAction(this->getEmptyObjectSlideContainerAction());
 }
 
-nddlgen::utilities::ModelActionPtr nddlgen::models::ObjectSlideContainerStateModel::getFillObjectSlideContainerAction()
+nddlgen::models::ActionModelPtr nddlgen::models::ObjectSlideContainerStateModel::getFillObjectSlideContainerAction()
 {
-	nddlgen::utilities::ModelActionPtr fillAction(new nddlgen::utilities::ModelAction());
+	nddlgen::models::ActionModelPtr fillAction(new nddlgen::models::ActionModel());
 
 	fillAction->setName("fill_objectslidecontainer");
 	fillAction->setDuration("5");
@@ -61,9 +61,9 @@ nddlgen::utilities::ModelActionPtr nddlgen::models::ObjectSlideContainerStateMod
 	return fillAction;
 }
 
-nddlgen::utilities::ModelActionPtr nddlgen::models::ObjectSlideContainerStateModel::getEmptyObjectSlideContainerAction()
+nddlgen::models::ActionModelPtr nddlgen::models::ObjectSlideContainerStateModel::getEmptyObjectSlideContainerAction()
 {
-	nddlgen::utilities::ModelActionPtr emptyAction(new nddlgen::utilities::ModelAction());
+	nddlgen::models::ActionModelPtr emptyAction(new nddlgen::models::ActionModel());
 
 	emptyAction->setName("empty_objectslidecontainer");
 	emptyAction->setDuration("5");

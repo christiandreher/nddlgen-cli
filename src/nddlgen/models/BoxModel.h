@@ -17,10 +17,10 @@
 #ifndef NDDLGEN_MODELS_BOXMODEL_H_
 #define NDDLGEN_MODELS_BOXMODEL_H_
 
+#include <nddlgen/models/AbstractObjectModel.h>
 #include <iostream>
 #include <fstream>
 
-#include <nddlgen/models/NddlGeneratable.h>
 
 namespace nddlgen
 {
@@ -30,7 +30,7 @@ namespace nddlgen
 	}
 }
 
-class nddlgen::models::BoxModel : public nddlgen::models::NddlGeneratable
+class nddlgen::models::BoxModel : public nddlgen::models::AbstractObjectModel
 {
 
 	public:

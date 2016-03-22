@@ -41,11 +41,11 @@ class nddlgen::models::ArmModel : public nddlgen::models::DefaultArmModel
 
 	private:
 
-		nddlgen::utilities::ModelActionPtr preparationProcess1Action();
+		nddlgen::models::ActionModelPtr preparationProcess1Action();
 
-		nddlgen::utilities::ModelActionPtr preparationProcess2Action();
+		nddlgen::models::ActionModelPtr preparationProcess2Action();
 
-		nddlgen::utilities::ModelActionPtr goalAchievedAction();
+		nddlgen::models::ActionModelPtr goalAchievedAction();
 
 	public:
 

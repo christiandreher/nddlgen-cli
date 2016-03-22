@@ -17,13 +17,13 @@
 #ifndef NDDLGEN_MODELS_OBJECTSLIDECONTAINERMODEL_H_
 #define NDDLGEN_MODELS_OBJECTSLIDECONTAINERMODEL_H_
 
+#include <nddlgen/models/AbstractObjectModel.h>
 #include <iostream>
 #include <fstream>
 
 #include <nddlgen/models/ObjectSlideContainerStateModel.h>
-#include <nddlgen/models/NddlGeneratable.h>
 #include <nddlgen/models/ProcessModel.h>
-#include <nddlgen/utilities/ModelAction.h>
+#include <nddlgen/models/ActionModel.h>
 #include <nddlgen/utilities/WriteStream.hpp>
 
 namespace nddlgen
@@ -34,7 +34,7 @@ namespace nddlgen
 	}
 }
 
-class nddlgen::models::ObjectSlideContainerModel : public nddlgen::models::NddlGeneratable
+class nddlgen::models::ObjectSlideContainerModel : public nddlgen::models::AbstractObjectModel
 {
 
 	public:

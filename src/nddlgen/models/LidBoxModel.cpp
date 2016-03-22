@@ -47,17 +47,17 @@ void nddlgen::models::LidBoxModel::initActions()
 	this->addAction(this->getCloseAction());
 }
 
-nddlgen::utilities::ModelActionPtr nddlgen::models::LidBoxModel::getOpenAction()
+nddlgen::models::ActionModelPtr nddlgen::models::LidBoxModel::getOpenAction()
 {
-	nddlgen::utilities::ModelActionPtr openAction(new nddlgen::utilities::ModelAction());
+	nddlgen::models::ActionModelPtr openAction(new nddlgen::models::ActionModel());
 
 	openAction->setName("open" + this->getNamePref());
 	openAction->setDuration("1");
 	openAction->addMetByCondition(this->getAccessor(), this->_closedPredicate);
 
-	if (this->isBlocked())
+	if (this->hasBlockingObjects())
 	{
-		foreach (nddlgen::models::NddlGeneratablePtr generatableModel, this->_blockedBy)
+		foreach (nddlgen::models::AbstractObjectModelPtr generatableModel, this->_blockingObjects)
 		{
 			if (generatableModel->getClassName() == "Obstacle")
 			{
@@ -75,9 +75,9 @@ nddlgen::utilities::ModelActionPtr nddlgen::models::LidBoxModel::getOpenAction()
 	return openAction;
 }
 
-nddlgen::utilities::ModelActionPtr nddlgen::models::LidBoxModel::getCloseAction()
+nddlgen::models::ActionModelPtr nddlgen::models::LidBoxModel::getCloseAction()
 {
-	nddlgen::utilities::ModelActionPtr closeAction(new nddlgen::utilities::ModelAction());
+	nddlgen::models::ActionModelPtr closeAction(new nddlgen::models::ActionModel());
 
 	closeAction->setName("close" + this->getNamePref());
 	closeAction->setDuration("1");

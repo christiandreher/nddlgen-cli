@@ -41,7 +41,7 @@ void nddlgen::models::ObstacleModel::initPredicates()
 
 void nddlgen::models::ObstacleModel::initActions()
 {
-	nddlgen::utilities::ModelActionPtr clearObstacleAction(new nddlgen::utilities::ModelAction());
+	nddlgen::models::ActionModelPtr clearObstacleAction(new nddlgen::models::ActionModel());
 
 	clearObstacleAction->setName("clear_" + this->getName());
 	clearObstacleAction->setDuration("2");

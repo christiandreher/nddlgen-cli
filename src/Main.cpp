@@ -21,9 +21,9 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
+#include <nddlgen/controllers/ObjectFactory.h>
 
 #include <nddlgen.h>
-#include <nddlgen/controllers/ModelFactory.h>
 #include <nddlgen/exceptions/FileAlreadyExistsException.hpp>
 
 // CLI argument helpers
@@ -118,14 +118,14 @@ int main(int argc, char* argv[])
 
 	// Create nddlgen controller configuration
 	nddlgen::ControllerConfigPtr cc(new nddlgen::ControllerConfig());
-	nddlgen::controllers::ModelFactoryPtr modelFactory(new nddlgen::controllers::ModelFactory());
+	nddlgen::controllers::ObjectFactoryPtr modelFactory(new nddlgen::controllers::ObjectFactory());
 
 	// Initialize controller config (setting adapter name and version, input files, output path)
 	cc->setAdapter("nddlgen-cli v" + _nddlgenCliVersion);
 	cc->setSdfInputFile(_inputSdfFile);
 	cc->setIsdInputFile(_inputIsdFile);
 	cc->setOutputFilesPath(_outputPath);
-	cc->setModelFactory(modelFactory);
+	cc->setObjectFactory(modelFactory);
 
 	// Throw warning if installed nddlgen-core version differs to much from the supported version
 	if (!boost::starts_with(nddlgen::VERSION, _supportedNddlgenCoreVersion + "."))

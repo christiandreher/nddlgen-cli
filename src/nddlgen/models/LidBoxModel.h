@@ -44,8 +44,8 @@ class nddlgen::models::LidBoxModel : public nddlgen::models::BoxModel
 		std::string _closedPredicate;
 		std::string _openingPredicate;
 
-		nddlgen::utilities::ModelActionPtr getOpenAction();
-		nddlgen::utilities::ModelActionPtr getCloseAction();
+		nddlgen::models::ActionModelPtr getOpenAction();
+		nddlgen::models::ActionModelPtr getCloseAction();
 
 	public:
 

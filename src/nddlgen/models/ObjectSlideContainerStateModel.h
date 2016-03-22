@@ -19,7 +19,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <nddlgen/models/NddlGeneratable.h>
+#include <nddlgen/models/AbstractObjectModel.h>
 
 namespace nddlgen
 {
@@ -30,7 +30,7 @@ namespace nddlgen
 	}
 }
 
-class nddlgen::models::ObjectSlideContainerStateModel : public nddlgen::models::NddlGeneratable
+class nddlgen::models::ObjectSlideContainerStateModel : public nddlgen::models::AbstractObjectModel
 {
 
 	private:
@@ -40,9 +40,9 @@ class nddlgen::models::ObjectSlideContainerStateModel : public nddlgen::models::
 		std::string _emptyPredicate;
 		std::string _fillingPredicate;
 
-		nddlgen::utilities::ModelActionPtr getFillObjectSlideContainerAction();
+		nddlgen::models::ActionModelPtr getFillObjectSlideContainerAction();
 
-		nddlgen::utilities::ModelActionPtr getEmptyObjectSlideContainerAction();
+		nddlgen::models::ActionModelPtr getEmptyObjectSlideContainerAction();
 
 	public:
 
