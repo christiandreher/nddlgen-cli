@@ -40,10 +40,6 @@ class nddlgen::models::ObjectSlideContainerStateModel : public nddlgen::models::
 		std::string _emptyPredicate;
 		std::string _fillingPredicate;
 
-		nddlgen::models::ActionModelPtr getFillObjectSlideContainerAction();
-
-		nddlgen::models::ActionModelPtr getEmptyObjectSlideContainerAction();
-
 	public:
 
 		ObjectSlideContainerStateModel();
@@ -51,8 +47,6 @@ class nddlgen::models::ObjectSlideContainerStateModel : public nddlgen::models::
 		virtual ~ObjectSlideContainerStateModel();
 
 		virtual void initPredicates();
-
-		virtual void initActions();
 
 		std::string getFullPredicate();
 		std::string getEmptyingPredicate();

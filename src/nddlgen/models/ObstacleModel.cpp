@@ -45,6 +45,21 @@ void nddlgen::models::ObstacleModel::initActions()
 
 	clearObstacleAction->setName("clear_" + this->getName());
 	clearObstacleAction->setDuration("2");
+
+	if (this->hasBlockingObjects())
+	{
+		foreach (nddlgen::models::AbstractObjectModelPtr generatableModel, this->_blockingObjects)
+		{
+			if (generatableModel->getClassName() == "Obstacle")
+			{
+				nddlgen::models::ObstacleModelPtr obstacle = boost::dynamic_pointer_cast<nddlgen::models::ObstacleModel>(
+						generatableModel);
+
+				clearObstacleAction->addContainedByCondition(obstacle->getAccessor(), obstacle->getClearedPredicate());
+			}
+		}
+	}
+
 	clearObstacleAction->addMetByCondition(this->getAccessor(), this->_blockingPredicate);
 	clearObstacleAction->addEqualsEffect(this->getAccessor(), this->_beingClearedPredicate);
 	clearObstacleAction->addMeetsEffect(this->getAccessor(), this->_clearedPredicate);

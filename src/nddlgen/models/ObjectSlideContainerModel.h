@@ -37,12 +37,20 @@ namespace nddlgen
 class nddlgen::models::ObjectSlideContainerModel : public nddlgen::models::AbstractObjectModel
 {
 
+	private:
+
+		nddlgen::models::ObjectSlideContainerStateModelPtr _oscs;
+
+		nddlgen::models::ActionModelPtr getFillObjectSlideContainerAction();
+		nddlgen::models::ActionModelPtr getEmptyObjectSlideContainerAction();
+
 	public:
 
 		ObjectSlideContainerModel();
 		virtual ~ObjectSlideContainerModel();
 
 		virtual void initSubObjects();
+		virtual void initActions();
 
 };
 

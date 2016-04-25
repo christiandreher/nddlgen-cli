@@ -41,40 +41,6 @@ void nddlgen::models::ObjectSlideContainerStateModel::initPredicates()
 	this->setInitialPredicate(this->_emptyPredicate);
 }
 
-void nddlgen::models::ObjectSlideContainerStateModel::initActions()
-{
-	this->addAction(this->getFillObjectSlideContainerAction());
-	this->addAction(this->getEmptyObjectSlideContainerAction());
-}
-
-nddlgen::models::ActionModelPtr nddlgen::models::ObjectSlideContainerStateModel::getFillObjectSlideContainerAction()
-{
-	nddlgen::models::ActionModelPtr fillAction(new nddlgen::models::ActionModel());
-
-	fillAction->setName("fill_objectslidecontainer");
-	fillAction->setDuration("5");
-
-	fillAction->addMetByCondition(this->getAccessor(), this->_emptyPredicate);
-	fillAction->addEqualsEffect(this->getAccessor(), this->_fillingPredicate);
-	fillAction->addMeetsEffect(this->getAccessor(), this->_fullPredicate);
-
-	return fillAction;
-}
-
-nddlgen::models::ActionModelPtr nddlgen::models::ObjectSlideContainerStateModel::getEmptyObjectSlideContainerAction()
-{
-	nddlgen::models::ActionModelPtr emptyAction(new nddlgen::models::ActionModel());
-
-	emptyAction->setName("empty_objectslidecontainer");
-	emptyAction->setDuration("5");
-
-	emptyAction->addMetByCondition(this->getAccessor(), this->_fullPredicate);
-	emptyAction->addEqualsEffect(this->getAccessor(), this->_emptyingPredicate);
-	emptyAction->addMeetsEffect(this->getAccessor(), this->_emptyPredicate);
-
-	return emptyAction;
-}
-
 std::string nddlgen::models::ObjectSlideContainerStateModel::getFullPredicate()
 {
 	return this->_fullPredicate;

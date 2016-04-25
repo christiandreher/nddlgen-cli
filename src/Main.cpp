@@ -391,7 +391,7 @@ void printLicense()
 	if (_verbose)
 	{
 		std::cout << std::endl;
-		std::cout << blue("  Copyright 2015 Christian Dreher (dreher@charlydelta.org)") << std::endl;
+		std::cout << blue("  Copyright 2016 Christian Dreher (dreher@charlydelta.org)") << std::endl;
 		std::cout << std::endl;
 		std::cout << blue("  This software is distributed on an \"AS IS\" BASIS, WITHOUT") << std::endl;
 		std::cout << blue("  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.") << std::endl;
