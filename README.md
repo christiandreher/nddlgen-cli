@@ -2,7 +2,7 @@
 
 ## General
 
-This package is the CLI to use the nddlgen-core library.
+This package is the CLI to use the [nddlgen-core](https://github.com/christiandreher/nddlgen-core) library.
 
 ## Parameters
 
